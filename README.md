@@ -22,8 +22,8 @@ Esta versão do projeto representa o **frontend completo** da aplicação, const
 ### 📷 Projeto em Ação
 
 | Dashboard Principal | Gerenciamento de Empresas | Cadastro | Edição em Modal |
-| :---: | :---: | :---: |
-| ![Dashboard do Monitoramento de Alvarás](./.github/assets/dashboard.png) | ![Gerenciamento e lista de empresas](./.github/assets/listarEmpresas.png) | ![Demonstração do Cadastro](./.github/assets/cadastro.png) | ![Modal de Ediçao](./.github/assets/modalEdicao.png)
+| :---: | :---: | :---: | :---: |
+| ![Dashboard do Monitoramento de Alvarás](./.github/assets/dashboard.png) | ![Gerenciamento e lista de empresas](./.github/assets/listarEmpresas.png) | ![Demonstração do Cadastro](./.github/assets/cadastro.png) | ![Modal de Ediçao](./.github/assets/modalEdicao.png) |
 
 ---
 
