@@ -1,0 +1,45 @@
+.dashboard-container {
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card-header h2 {
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #333;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field {
+  margin-bottom: 2rem;
+}
+
+.field-calendar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}

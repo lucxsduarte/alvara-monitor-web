@@ -1,0 +1,115 @@
+<section class="dashboard-container">
+  <div class="top-cards-container">
+
+    <div class="card" id="monitoramento-empresas">
+      <div class="card-header">
+        <span class="pi pi-desktop"></span>
+        <h2>Empresas Monitoradas</h2>
+      </div>
+      <div class="card-body">
+        <p class="card-number">{{ empresas.length }}</p>
+        <button class="btn-alvaras-vencidos" (click)="irParaGerenciamentoAlvaras()">Alvarás Vencidos: {{ alvarasVencidos.length }}</button>
+      </div>
+    </div>
+
+    <div class="card card-alvara-vencendo">
+      <div class="card-header">
+        <span class="pi pi-clock"></span>
+        <h2>Alvarás Vencendo</h2>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let empresa of alvarasVencendo30 | slice: 0:3" class="alvara-item">
+          <div class="alvara-info">
+            <span><strong>Empresa:</strong> {{ empresa.empresa.nome }}</span>
+            <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
+            <div class="vencimento-info">
+              <strong>Vencimento:</strong>
+              <div class="vencimento-dados">
+                <span>{{ empresa.vencimento | date:'dd/MM/yyyy' }}</span>
+                <p-tag
+                  [severity]="definirCorDias(calcularDiasParaVencimento(empresa.vencimento))"
+                  [value]="defineTextoVencimento(empresa.vencimento)">
+                </p-tag>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="pi pi-calendar-clock"></span>
+        <h2>Próximos Vencimentos</h2>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let empresa of proximosVencimentos" class="alvara-item">
+          <div class="alvara-info">
+            <span><strong>Empresa:</strong> {{ empresa.empresa.nome }}</span>
+            <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
+            <div class="vencimento-info">
+              <div class="vencimento-label">
+                <strong>Vencimento:</strong>
+              </div>
+              <div class="vencimento-dados">
+                <span>{{ empresa.vencimento | date:'dd/MM/yyyy' }}</span>
+                <p-tag
+                  [severity]="definirCorDias(calcularDiasParaVencimento(empresa.vencimento))"
+                  [value]="defineTextoVencimento(empresa.vencimento)">
+                </p-tag>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="vencimentos-container">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="pi pi-exclamation-circle" style="color: red"></span>
+        <h2>Alvarás vencendo em 30 dias</h2>
+      </div>
+      <div class="card-body">
+        <div *ngIf="alvarasVencendo30.length > 0; else semVencimentos30">
+          <p-table
+            [value]="alvarasVencendo30"
+            [paginator]="true"
+            [rows]="5"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Empresa</th>
+                <th>Alvará</th>
+                <th style="text-align: center">Vencimento</th>
+                <th style="text-align: center">Faltam</th>
+                <th style="text-align: center">Ações</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-empresa>
+              <tr>
+                <td style="width: 60%;">{{ empresa.empresa.nome }}</td>
+                <td style="width: 20%;">{{ empresa.tipoAlvara || 'N/A' }}</td>
+                <td style="width: 8%; text-align: center;">{{ empresa.vencimento | date:'dd/MM/yyyy' }}</td>
+                <td style="width: 7%; text-align: center;">{{ defineTextoVencimento(empresa.vencimento) }}</td>
+                <td style="width: 5%; text-align: center;">
+                  <button pButton type="button" icon="pi pi-angle-right" class="p-button-text" pTooltip="Visualizar" style="color: #2c3e50" (click)="irParaEmpresa(empresa.empresa.id)"></button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+
+        <ng-template #semVencimentos30>
+          <p class="no-alvara">Nenhum alvará vencendo dentro de 30 dias</p>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+
+</section>

@@ -1,0 +1,83 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<section class="dashboard-container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Todas as empresas</h2>
+    </div>
+
+    <div class="card-body">
+      <div *ngIf="empresas.length > 0; else semEmpresas">
+        <p-table
+          #tabelaEmpresas
+          [value]="empresasFiltradas"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [paginator]="true"
+          [rows]="10"
+          [globalFilterFields]="['nome']"
+        >
+          <ng-template pTemplate="caption">
+            <div>
+              <p-iconField iconPosition="left" class="ml-auto">
+                <p-inputIcon>
+                  <i class="pi pi-search"></i>
+                </p-inputIcon>
+                <input
+                  type="text"
+                  pInputText
+                  size="50"
+                  placeholder="Procurar por nome"
+                  [(ngModel)]="filtroGlobal"
+                  (input)="aplicarFiltroGlobal()"
+                />
+              </p-iconField>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Nome</th>
+              <th style="text-align: center;">Alvará Bombeiros</th>
+              <th style="text-align: center;">Alvará Funcionamento</th>
+              <th style="text-align: center;">Alvará Polícia</th>
+              <th style="text-align: center;">Alvará Vigilância Sanitaria</th>
+              <th style="text-align: center;">Ações</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-empresa>
+            <tr>
+              <td style="width: 30%;">{{ empresa.nome }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.vencBombeiros | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.vencFuncionamento | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.vencPolicia | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.vencVigilancia | date:'dd/MM/yyyy' }}</td>
+              <td style="text-align: center; width: 6%;">
+                <button
+                  pButton
+                  icon="pi pi-pencil"
+                  class="p-button-text"
+                  style="color: #2c3e50"
+                  pTooltip="Editar"
+                  (click)="editar(empresa.id)"
+                ></button>
+                <button
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-text"
+                  style="color: #e74c3c"
+                  pTooltip="Excluir"
+                  (click)="excluir(empresa.id)"
+                ></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <ng-template #semEmpresas>
+        <p class="no-alvara">Nenhuma empresa encontrada</p>
+      </ng-template>
+    </div>
+  </div>
+</section>

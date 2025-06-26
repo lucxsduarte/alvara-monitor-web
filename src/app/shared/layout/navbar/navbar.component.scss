@@ -1,0 +1,100 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  height: 4rem;
+}
+
+::ng-deep .p-menubar {
+  background-color: #2c3e50;
+  border: none;
+}
+
+/* Botão do menu no mobile */
+::ng-deep .p-menubar-button {
+  display: none; /* Escondido no desktop */
+  color: white;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Mostrar o botão no mobile */
+@media (max-width: 960px) {
+  ::ng-deep .p-menubar-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+
+  /* Quando o menu estiver aberto */
+  ::ng-deep .p-menubar-mobile-active {
+    background-color: #2c3e50;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Itens no mobile */
+  ::ng-deep .p-menubar-root-list {
+    background-color: #2c3e50;
+    flex-direction: column;
+    margin: 0;
+    width: 100%;
+  }
+
+  ::ng-deep .p-menuitem {
+    width: 100%;
+  }
+
+  ::ng-deep .p-menuitem-content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 1rem;
+  }
+}
+
+::ng-deep .p-menubar-root-list {
+  margin: auto;
+  gap: .4rem;
+}
+
+::ng-deep .p-menuitem-content {
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+::ng-deep .p-menuitem-link:hover {
+  border-radius: 8px;
+  background-color: rgb(33, 50, 66);
+}
+
+::ng-deep .p-menuitem-icon,
+::ng-deep .p-menuitem-text,
+::ng-deep .p-menuitem-link,
+::ng-deep .p-submenu-icon {
+  color: white;
+}
+
+::ng-deep .p-submenu-list {
+  border-radius: 0 0 8px 8px;
+  width: 100%;
+  background-color: rgb(33, 50, 66);
+}
+
+::ng-deep .p-menuitem-active {
+  border-radius: 8px 8px 0 0;
+  background-color: rgb(33, 50, 66);
+}
+
+::ng-deep .p-submenu-list .p-menuitem-link:hover {
+  border-radius: 8px;
+  background-color: rgba(201, 201, 201, 0.1);
+}
+

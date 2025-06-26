@@ -1,0 +1,254 @@
+.dashboard-container {
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.card-header h2 {
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #333;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.top-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.top-cards-container .card {
+  flex: 1 1 calc(33.33% - 16px);
+  min-width: 280px;
+}
+
+#monitoramento-empresas .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  height: 215px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+
+.card-number {
+  display: flex;
+  justify-content: center;
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  width: 35%;
+  min-width: 120px;
+}
+
+.btn-alvaras-vencidos {
+  background-color: rgba(231, 76, 60, 0.8);
+  color: white;
+  border: none;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 65%;
+  min-width: 160px;
+
+  &:hover {
+    background-color: rgba(231, 76, 60, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-buttons button {
+  padding: 0;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  min-width: 100px;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-empresas {
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 33%;
+
+  /* Efeito de hover */
+  &:hover {
+    background-color: #3f516b;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-adicionar {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 33%;
+
+  /* Efeito de hover */
+  &:hover {
+    background-color: #2ecc71;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btn-editar {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 33%;
+
+  /* Efeito de hover */
+  &:hover {
+    background-color: #e67e22;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-alvara-vencendo {
+  background-color: rgba(255, 249, 196, 0.33);
+}
+
+.alvara-item {
+  font-size: 0.9rem;
+  color: #555;
+  padding: 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.alvara-info span {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.alvara-item:last-child {
+  border-bottom: none;
+}
+
+.vencimento-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  margin-bottom: 5px;
+
+  .vencimento-dados {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.no-alvara {
+  font-size: 1rem;
+  color: #999;
+  text-align: center;
+  padding: 16px 0;
+}
+
+::ng-deep .p-datatable {
+  font-size: 0.95rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+::ng-deep .p-datatable thead th {
+  background-color: #eeeeee;
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+::ng-deep .p-datatable tbody td {
+  background-color: #ffffff;
+  padding: 2px 10px;
+  color: #555;
+  border-top: 1px solid #eee;
+  font-size: 1rem;
+  text-align: left;
+}
+
+::ng-deep .linha-vencida {
+  background-color: rgba(231, 76, 60, 0.3);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .top-cards-container .card {
+    flex: 1 1 100%;
+  }
+
+  #monitoramento-empresas .card-body {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 16px;
+  }
+
+  .card-number {
+    font-size: 2.5rem;
+    width: 100%;
+    min-width: 0;
+    text-align: center;  // Centraliza o número
+  }
+
+  .btn-alvaras-vencidos {
+    width: 100%;
+    font-size: 1.1rem;
+  }
+
+  .btn-empresas, .btn-adicionar, .btn-editar {
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px;
+  }
+}

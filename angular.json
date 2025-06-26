@@ -33,6 +33,10 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/primeng/resources/themes/lara-light-indigo/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeflex/primeflex.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -51,7 +55,35 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environments/environment.ts",
+                  "with": "src/app/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "mock": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environments/environment.ts",
+                  "with": "src/app/environments/environment.mock.ts"
+                }
+              ]
+            },
+            "local": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/app/environments/environment.ts",
+                  "with": "src/app/environments/environment.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -66,6 +98,12 @@
           "configurations": {
             "production": {
               "buildTarget": "alvara-monitor-web:build:production"
+            },
+            "mock": {
+              "buildTarget": "alvara-monitor-web:build:mock"
+            },
+            "local": {
+              "buildTarget": "alvara-monitor-web:build:local"
             },
             "development": {
               "buildTarget": "alvara-monitor-web:build:development"

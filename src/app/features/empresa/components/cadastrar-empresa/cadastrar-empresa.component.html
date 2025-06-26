@@ -1,0 +1,94 @@
+<p-toast></p-toast>
+
+<section class="dashboard-container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Cadastrar Conveniada</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="empresaForm" (ngSubmit)="save()">
+        <!-- Nome (obrigatório) -->
+        <div class="p-fluid">
+          <div class="field">
+            <p-floatLabel>
+              <input
+                id="nome"
+                type="text"
+                pInputText
+                formControlName="nome"
+                [ngClass]="{ 'ng-invalid ng-dirty': empresaForm.get('nome')?.invalid && empresaForm.get('nome')?.touched }"
+              />
+              <label for="nome">Nome*</label>
+            </p-floatLabel>
+            <small *ngIf="empresaForm.get('nome')?.invalid && empresaForm.get('nome')?.touched" class="p-error">
+              Nome é obrigatório.
+            </small>
+          </div>
+        </div>
+
+        <!-- Alvarás (opcionais) -->
+        <div class="p-fluid grid">
+          <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
+            <p-floatLabel>
+              <p-calendar
+                inputId="vencBombeiros"
+                formControlName="vencBombeiros"
+                dateFormat="dd/mm/yy"
+                showIcon
+              ></p-calendar>
+              <label for="vencBombeiros">Alvará Bombeiros</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
+            <p-floatLabel>
+              <p-calendar
+                inputId="vencFuncionamento"
+                formControlName="vencFuncionamento"
+                dateFormat="dd/mm/yy"
+                showIcon
+              ></p-calendar>
+              <label for="vencFuncionamento">Alvará Funcionamento</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
+            <p-floatLabel>
+              <p-calendar
+                inputId="vencPolicia"
+                formControlName="vencPolicia"
+                dateFormat="dd/mm/yy"
+                showIcon
+              ></p-calendar>
+              <label for="vencPolicia">Alvará Polícia</label>
+            </p-floatLabel>
+          </div>
+
+          <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
+            <p-floatLabel>
+              <p-calendar
+                inputId="vencVigilancia"
+                formControlName="vencVigilancia"
+                dateFormat="dd/mm/yy"
+                showIcon
+
+              ></p-calendar>
+              <label for="vencVigilancia">Alvará Vigilância Sanitária</label>
+            </p-floatLabel>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <button
+            type="submit"
+            pButton
+            label="Salvar"
+            [disabled]="empresaForm.invalid"
+            class="p-button-primary"
+          ></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

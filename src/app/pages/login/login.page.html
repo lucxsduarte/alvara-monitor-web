@@ -1,0 +1,20 @@
+<section class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+    <form (ngSubmit)="fazerLogin()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="usuario">Usuário</label>
+        <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required />
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" [(ngModel)]="senha" required />
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+
+      <p *ngIf="erroLogin" class="error-message">{{ erroLogin }}</p>
+    </form>
+  </div>
+</section>
