@@ -23,7 +23,7 @@ Esta versão do projeto representa o **frontend completo** da aplicação, const
 
 | Dashboard Principal | Gerenciamento de Empresas | Edição em Modal (GIF) |
 | :---: | :---: | :---: |
-| ![Dashboard do Monitoramento de Alvarás](./.github/assets/dashboard.png) | ![Gerenciamento e lista de empresas](./.github/assets/listaEmpresas.png) | ![Demonstração do Cadastro](./.github/assets/cadastro.png) |
+| ![Dashboard do Monitoramento de Alvarás](./.github/assets/dashboard.png) | ![Gerenciamento e lista de empresas](./.github/assets/listarEmpresas.png) | ![Demonstração do Cadastro](./.github/assets/cadastro.png) |
 
 ---
 
