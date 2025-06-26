@@ -1,4 +1,4 @@
-# 🏢 Alvará Monitor: Gestão Inteligente de Vencimentos 🏢
+# 🏢 Alvará Monitor: Gestão Inteligente de Vencimentos
 
 ![Status do Projeto](https://img.shields.io/badge/status-funcional_com_mocks-green)
 ![Licença](https://img.shields.io/badge/license-MIT-blue)
