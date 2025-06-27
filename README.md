@@ -8,6 +8,8 @@
 **⚠️ Atenção:** Esta é uma versão de demonstração (portfólio) que opera com dados 100% mockados. Nenhuma informação real é necessária ou armazenada.
 
 **🚀 Acesse a versão online do projeto aqui: [Monitoramento de Alvarás](https://demo-monitoramento-alvara.vercel.app/)**
+Login: admin
+Senha: 123
 ---
 
 ### 💡 Sobre o Projeto
