@@ -1,11 +1,19 @@
 # 🏢 Alvará Monitor: Gestão Inteligente de Vencimentos
 
-![Status do Projeto](https://img.shields.io/badge/status-funcional_com_mocks-green)
-![Licença](https://img.shields.io/badge/license-MIT-blue)
+<p align="center">
+  <img src="https://img.shields.io/badge/status-integrado%20com%20API-blue?style=for-the-badge" alt="Status do Projeto">
+  <img src="https://img.shields.io/badge/license-MIT-blue?style=for-the-badge" alt="Licença">
+</p>
 
-> Solução frontend desenvolvida para automatizar e gerenciar o vencimento de alvarás para um escritório de contabilidade, resolvendo uma necessidade real de negócio.
+<p align="center">
+  <a href="https://demo-monitoramento-alvara.vercel.app/" target="_blank">
+    <img src="https://img.shields.io/badge/Acessar-Demonstração%20Online-brightgreen?style=for-the-badge&logo=vercel" alt="Acessar Demonstração Online">
+  </a>
+</p>
 
-**⚠️ Atenção:** Esta é uma versão de demonstração (portfólio) que opera com dados 100% mockados. Nenhuma informação real é necessária ou armazenada.
+> Solução frontend desenvolvida para automatizar e gerenciar o vencimento de alvarás para um escritório de contabilidade, onde o controle de vencimentos de alvarás era um processo manual e sujeito a erros.
+
+> **⚠️ Atenção:** A demonstração online acima roda com **dados mockados** para uma experiência de portfólio rápida e acessível. O código-fonte, no entanto, está **totalmente integrado a uma API backend** e pode ser executado em modo de desenvolvimento real.
 
 **🚀 Acesse a demonstração ao vivo do projeto aqui: [demo-monitoramento-alvara.vercel.app](https://demo-monitoramento-alvara.vercel.app/)**
 
@@ -20,7 +28,7 @@ Este projeto nasceu de uma necessidade real identificada em um escritório de co
 
 O **Monitoramento de Alvarás** foi idealizado como uma solução moderna para centralizar essas informações, fornecer visibilidade clara sobre os próximos vencimentos através de um dashboard intuitivo e automatizar os lembretes, garantindo que nenhum prazo seja perdido.
 
-Esta versão do projeto representa o **frontend completo** da aplicação, construído com as mais recentes tecnologias do ecossistema Angular para ser rápido, reativo e responsivo.
+É uma solução full-stack moderna. Este repositório contém o **Frontend**, construído com Angular para ser uma interface rápida, reativa e responsiva, que consome os dados de uma [API backend dedicada desenvolvida em Java/Spring Boot](https://github.com/lucxsduarte/alvara-monitor).
 
 ---
 
@@ -32,35 +40,38 @@ Esta versão do projeto representa o **frontend completo** da aplicação, const
 
 ---
 
-### ✨ Funcionalidades Implementadas
+### ✨ Funcionalidades e Arquitetura
 
-- **Dashboard Interativo:** Visão geral com indicadores de alvarás vencidos, a vencer em 30 dias e próximos vencimentos.
-- **Gerenciamento Completo (CRUD):** Cadastro, leitura, atualização e exclusão de empresas e seus respectivos alvarás.
-- **Busca e Filtragem:** Ferramentas para encontrar rapidamente empresas na base de dados.
+- **Arquitetura Flexível (Mock/Real):** Capacidade de rodar com dados mockados (para portfólio) ou conectado a uma API real, controlado por ambientes do Angular.
+- **Integração com API REST:** Consumo de uma API backend para todas as operações de CRUD (Create, Read, Update, Delete) de empresas.
+- **Filtragem Reativa no Lado do Servidor:** A busca por nome e os filtros de status (ex: alvarás vencidos) são processados pelo backend, garantindo alta performance e escalabilidade.
+- **Dashboard Otimizado:** O dashboard faz uma única chamada a um endpoint de resumo (`/api/dashboard/summary`) que entrega todos os KPIs já calculados, minimizando o tráfego de rede.
+- **Autenticação Simulada:** Fluxo de login/logout com guarda de rotas (`CanActivate`) para proteger o acesso ao sistema.
 - **Design Responsivo:** Experiência de uso consistente em desktops, tablets e celulares.
-- **Autenticação Simulada:** Fluxo de login/logout com guarda de rotas para proteger o acesso ao sistema.
-- **Feedback ao Usuário:** Notificações em tempo real para todas as ações importantes.
+- **Componentização e Reatividade:** Uso de componentes `standalone`, `DynamicDialog` do PrimeNG para modais e RxJS para gerenciar fluxos de dados de forma reativa e eficiente.
 
 ---
 
 ### 🛠️ Tecnologias Utilizadas
 
 * **Angular (v17):** Framework principal com arquitetura de componentes Standalone.
-* **TypeScript:** Superset do JavaScript que adiciona tipagem estática.
-* **PrimeNG:** Robusta biblioteca de componentes de UI para uma interface rica e profissional.
-* **RxJS:** Para gerenciamento de estado e fluxos de dados de forma reativa.
-* **SCSS:** Pré-processador CSS para uma estilização mais organizada e poderosa.
-* **PrimeFlex:** Grid CSS e utilitários para criar layouts responsivos.
-
+* **TypeScript:**
+* **PrimeNG & PrimeFlex**
+* **RxJS:** 
+* **SCSS:**
+  
 ---
 
-### 🚀 Como Executar a Versão de Demonstração
+### 🚀 Como Executar o Projeto
 
-Para explorar o projeto em sua máquina, siga os passos abaixo.
+Este projeto pode ser executado em dois modos distintos:
+
+#### Modo 1: Demonstração (com Dados Mockados)
+Ideal para uma visualização rápida do frontend sem a necessidade de um backend.
 
 ```bash
 # 1. Clone o repositório
-git clone [https://github.com/](https://github.com/)[SeuUsuario]/alvara-monitor-web.git
+git clone [https://github.com/lucxsduarte/alvara-monitor-web.git](https://github.com/lucxsduarte/alvara-monitor-web.git)
 
 # 2. Acesse o diretório
 cd alvara-monitor-web
@@ -68,9 +79,18 @@ cd alvara-monitor-web
 # 3. Instale as dependências
 npm install
 
-# 4. Inicie o servidor de desenvolvimento com os dados mockados
-# A aplicação estará disponível em http://localhost:4200
+# 4. Inicie o servidor com a configuração de mock
 ng serve --configuration mock
+```
+
+#### Modo 2: Desenvolvimento (Conectado à API Real)
+Para testar a integração completa.
+
+**Pré-requisito:** A [API backend](https://github.com/lucxsduarte/alvara-monitor) deve estar em execução na sua máquina (`localhost:8080`).
+
+```bash
+# Siga os passos 1 a 3 acima, e depois execute:
+ng serve
 ```
 
 ---
@@ -79,7 +99,7 @@ ng serve --configuration mock
 
 Este projeto continua em desenvolvimento. Os próximos passos planejados são:
 
-- [ ] **Integração com Backend:** Conectar o frontend com a API real em Java para persistência dos dados.
+- [X] **Integração com Backend:** Conexão do frontend com a API real em Java.
 - [ ] **Notificações por Email:** Implementar um serviço de envio de emails para alertar sobre vencimentos próximos.
 - [ ] **Perfis de Usuário:** Diferenciar permissões entre administradores e usuários comuns.
 - [ ] **Melhorias de UI/UX:** Refinar a experiência do usuário com base em feedbacks.
