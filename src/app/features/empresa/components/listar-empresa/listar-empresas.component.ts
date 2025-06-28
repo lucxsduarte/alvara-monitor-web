@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ButtonDirective} from "primeng/button";
 import {DatePipe, NgIf} from "@angular/common";
 import {Table, TableModule} from "primeng/table";
@@ -16,6 +16,17 @@ import {DialogService, DynamicDialogModule, DynamicDialogRef} from "primeng/dyna
 import {EditarEmpresaComponent} from "../editar-empresa/editar-empresa.component";
 import {ActivatedRoute} from "@angular/router";
 import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  Subject,
+  Subscription,
+  switchMap
+} from "rxjs";
+import {FiltroStatusEmpresa} from "../../models/enums/FiltroStatusEmpresa";
 
 
 @Component({
@@ -39,142 +50,106 @@ import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
   styleUrl: './listar-empresas.component.scss',
   providers: [DialogService, ConfirmationService],
 })
-export class ListarEmpresasComponent implements OnInit {
+export class ListarEmpresasComponent implements OnInit, OnDestroy {
   empresas: Empresa[] = [];
-  empresasFiltradas: Empresa[] = [];
+  filtroGlobal: string = '';
+
   private empresaService = inject(EmpresaService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private dialogService = inject(DialogService);
   private route = inject(ActivatedRoute);
+
+  private filtroGlobalSubject = new Subject<string>();
+  private refreshSubject = new Subject<void>();
+  private subscriptions = new Subscription();
   ref!: DynamicDialogRef;
-  filtroGlobal: string = '';
 
   @ViewChild('tabelaEmpresas') tabelaEmpresas!: Table;
 
   ngOnInit(): void {
-    this.empresaService.getCompanies().subscribe(empresas => {
-      this.empresas = empresas.sort((a, b) =>
-        a.nome.localeCompare(b.nome, 'pt-BR', {sensitivity: 'base'})
-      );
+    const combinedStream$ = combineLatest([
+      this.route.queryParams,
+      this.filtroGlobalSubject.pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith('')
+      ),
+      this.refreshSubject.pipe(startWith(null))
+    ]).pipe(
+      switchMap(([params, nomeFiltro]) => {
+        const id = params['id'];
+        const filtro = params['filtro'];
 
-      this.route.queryParams.subscribe(params => {
-        this.aplicarFiltro(params);
-        this.aplicarFiltroGlobal();
-      });
-    });
+        if (id) {
+          return this.empresaService.buscarEmpresaPorId(Number(id)).pipe(
+            map(empresa => empresa ? [empresa] : [])
+          );
+        }
+
+        const statusFiltro = filtro === 'vencidos' ? FiltroStatusEmpresa.VENCIDOS : undefined;
+        return this.empresaService.buscarEmpresas(nomeFiltro, statusFiltro);
+      })
+    );
+
+    this.subscriptions.add(
+      combinedStream$.subscribe({
+        next: (empresas) => {
+          this.empresas = empresas.sort((a, b) =>
+            a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+          );
+        },
+        error: (err) => {
+          console.error("Erro ao carregar empresas:", err);
+          this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível carregar as empresas.' });
+        }
+      })
+    );
   }
 
-  aplicarFiltro(params: any) {
-    let empresasBase = [...this.empresas];
-
-    if (params['filtro'] === 'vencidos') {
-      const hoje = new Date();
-      hoje.setHours(0, 0, 0, 0);
-
-      empresasBase = empresasBase.filter(empresa => {
-        const vencBombeiros = empresa.vencBombeiros ? createDateFromYYYYMMDD(empresa.vencBombeiros) : null;
-        if (vencBombeiros) vencBombeiros.setHours(0, 0, 0, 0);
-
-        const vencFuncionamento = empresa.vencFuncionamento ? createDateFromYYYYMMDD(empresa.vencFuncionamento) : null;
-        if (vencFuncionamento) vencFuncionamento.setHours(0, 0, 0, 0);
-
-        const vencPolicia = empresa.vencPolicia ? createDateFromYYYYMMDD(empresa.vencPolicia) : null;
-        if (vencPolicia) vencPolicia.setHours(0, 0, 0, 0);
-
-        const vencVigilancia = empresa.vencVigilancia ? createDateFromYYYYMMDD(empresa.vencVigilancia) : null;
-        if (vencVigilancia) vencVigilancia.setHours(0, 0, 0, 0);
-
-        return (
-          (vencBombeiros && vencBombeiros < hoje) ||
-          (vencFuncionamento && vencFuncionamento < hoje) ||
-          (vencPolicia && vencPolicia < hoje) ||
-          (vencVigilancia && vencVigilancia < hoje)
-        );
-      });
-    } else if (params['filtro'] === 'empresa' && params['id']) {
-      const id = Number(params['id']);
-      empresasBase = empresasBase.filter(e => e.id === id);
-    }
-
-    this.empresasFiltradas = empresasBase;
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
-  aplicarFiltroGlobal() {
-    if (this.tabelaEmpresas) {
-      this.tabelaEmpresas.filterGlobal(this.filtroGlobal, 'contains');
-    }
+  onFiltroGlobalChange(): void {
+    this.filtroGlobalSubject.next(this.filtroGlobal);
   }
 
-  editar(empresaId: number) {
-    const empresa = this.empresas.find(e => e.id === empresaId);
-    if (!empresa) return;
-
+  editar(empresa: Empresa): void {
     this.ref = this.dialogService.open(EditarEmpresaComponent, {
       data: { empresa },
-      header: 'Editar Empresa',
-      width: '75%',
-      height: '70%',
-      dismissableMask: true,
+      header: `Editar Empresa: ${empresa.nome}`,
+      width: '60%',
       modal: true
     });
 
-    this.ref.onClose.subscribe((dadosEditados: Empresa) => {
-      if (dadosEditados) {
-        this.empresaService.updateCompany(dadosEditados).subscribe(() => {
-          this.empresaService.getCompanies().subscribe(updatedCompanies => {
-            this.empresas = updatedCompanies.sort((a, b) =>
-              a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
-            );
-
-            this.route.queryParams.subscribe(params => {
-              this.aplicarFiltro(params);
-              this.aplicarFiltroGlobal();
-            });
+    this.subscriptions.add(
+      this.ref.onClose.subscribe((dadosEditados: Empresa) => {
+        if (dadosEditados) {
+          this.empresaService.atualizarEmpresa(dadosEditados).subscribe({
+            next: () => {
+              this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa atualizada com sucesso!' });
+              this.refreshSubject.next();
+            },
+            error: () => this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar empresa.' })
           });
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Empresa atualizada com sucesso!'
-          });
-        });
-      }
-    });
+        }
+      })
+    );
   }
 
-  excluir(empresaId: number) {
+  excluir(empresa: Empresa): void {
     this.confirmationService.confirm({
-      message: 'Tem certeza que deseja excluir esta empresa?',
-      header: 'Confirmação',
+      message: `Tem certeza que deseja excluir a empresa "${empresa.nome}"?`,
+      header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.empresaService.deleteCompany(empresaId).subscribe({
+        this.empresaService.deletarEmpresa(empresa.id).subscribe({
           next: () => {
-            this.empresaService.getCompanies().subscribe(updatedCompanies => {
-              this.empresas = updatedCompanies.sort((a, b) =>
-                a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
-              );
-
-              this.route.queryParams.subscribe(params => {
-                this.aplicarFiltro(params);
-                this.aplicarFiltroGlobal();
-              });
-            });
-
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sucesso',
-              detail: 'Empresa excluída com sucesso!'
-            });
+            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa excluída com sucesso!' });
+            this.refreshSubject.next();
           },
-          error: () => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erro',
-              detail: 'Erro ao excluir empresa.'
-            });
-          }
+          error: () => this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir empresa.' })
         });
       }
     });

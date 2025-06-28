@@ -11,29 +11,48 @@
       <div class="grid label-margin">
         <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
           <p-floatLabel>
-            <p-calendar inputId="vencBombeiros" formControlName="vencBombeiros" dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar
+              inputId="vencBombeiros"
+              formControlName="vencBombeiros"
+              dateFormat="dd/mm/yy"
+              [appendTo]="'body'">
+            </p-calendar>
             <label for="vencBombeiros">Bombeiros</label>
           </p-floatLabel>
         </div>
 
         <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
           <p-floatLabel>
-            <p-calendar inputId="vencFuncionamento" formControlName="vencFuncionamento"
-                        dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar
+              inputId="vencFuncionamento"
+              formControlName="vencFuncionamento"
+              dateFormat="dd/mm/yy"
+              [appendTo]="'body'">
+            </p-calendar>
             <label for="vencFuncionamento">Funcionamento</label>
           </p-floatLabel>
         </div>
 
         <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
           <p-floatLabel>
-            <p-calendar inputId="vencPolicia" formControlName="vencPolicia" dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar
+              inputId="vencPolicia"
+              formControlName="vencPolicia"
+              dateFormat="dd/mm/yy"
+              [appendTo]="'body'"
+            ></p-calendar>
             <label for="vencPolicia">Polícia</label>
           </p-floatLabel>
         </div>
 
         <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
           <p-floatLabel>
-            <p-calendar inputId="vencVigilancia" formControlName="vencVigilancia" dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar
+              inputId="vencVigilancia"
+              formControlName="vencVigilancia"
+              dateFormat="dd/mm/yy"
+              [appendTo]="'body'">
+            </p-calendar>
             <label for="vencVigilancia">Vigilância</label>
           </p-floatLabel>
         </div>

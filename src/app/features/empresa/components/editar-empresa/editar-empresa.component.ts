@@ -8,6 +8,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { Empresa } from '../../models/empresa.model';
 import {MessageService} from "primeng/api";
 import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
+import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
 
 
 @Component({
@@ -24,13 +25,17 @@ import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
   styleUrl: './editar-empresa.component.scss'
 })
 export class EditarEmpresaComponent implements OnInit {
+  empresaForm!: FormGroup;
+  empresa: Empresa;
+
   private fb = inject(FormBuilder);
   private ref = inject(DynamicDialogRef);
   private config = inject(DynamicDialogConfig);
   private messageService = inject(MessageService);
 
-  empresaForm!: FormGroup;
-  empresa: Empresa = this.config.data.empresa;
+  constructor() {
+    this.empresa = this.config.data.empresa;
+  }
 
   ngOnInit(): void {
     this.empresaForm = this.fb.group({
@@ -39,48 +44,30 @@ export class EditarEmpresaComponent implements OnInit {
       vencFuncionamento: [createDateFromYYYYMMDD(this.empresa?.vencFuncionamento)],
       vencPolicia: [createDateFromYYYYMMDD(this.empresa?.vencPolicia)],
       vencVigilancia: [createDateFromYYYYMMDD(this.empresa?.vencVigilancia)],
+    }, {
+      validators: [requireAtLeastOneDateValidator()]
     });
   }
 
   salvar(): void {
     if (this.empresaForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro de validação',
-        detail: 'Preencha o nome da empresa corretamente.',
-      });
+      const detail = this.empresaForm.hasError('requireAtLeastOneDate')
+        ? 'Preencha pelo menos uma data de alvará.'
+        : 'Preencha o nome da empresa corretamente.';
+      this.messageService.add({ severity: 'error', summary: 'Erro de validação', detail });
       return;
     }
 
-    const {
-      vencBombeiros,
-      vencFuncionamento,
-      vencPolicia,
-      vencVigilancia
-    } = this.empresaForm.value;
-
-    const nenhumaDataPreenchida = !vencBombeiros && !vencFuncionamento && !vencPolicia && !vencVigilancia;
-    if (nenhumaDataPreenchida) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro de validação',
-        detail: 'Preencha pelo menos uma data de alvará.',
-      });
-      return;
-    }
-
-    const formattedData = {
-      ...this.empresaForm.value,
-      vencBombeiros: vencBombeiros ? vencBombeiros.toISOString().split('T')[0] : null,
-      vencFuncionamento: vencFuncionamento ? vencFuncionamento.toISOString().split('T')[0] : null,
-      vencPolicia: vencPolicia ? vencPolicia.toISOString().split('T')[0] : null,
-      vencVigilancia: vencVigilancia ? vencVigilancia.toISOString().split('T')[0] : null,
-    };
-
+    const formValues = this.empresaForm.value;
+    const formatDate = (date: Date | null): string | null => date ? date.toISOString().split('T')[0] : null;
 
     const dadosEditados: Empresa = {
       ...this.empresa,
-      ...formattedData
+      ...formValues,
+      vencBombeiros: formatDate(formValues.vencBombeiros),
+      vencFuncionamento: formatDate(formValues.vencFuncionamento),
+      vencPolicia: formatDate(formValues.vencPolicia),
+      vencVigilancia: formatDate(formValues.vencVigilancia),
     };
 
     this.ref.close(dadosEditados);

@@ -11,7 +11,7 @@
       <div *ngIf="empresas.length > 0; else semEmpresas">
         <p-table
           #tabelaEmpresas
-          [value]="empresasFiltradas"
+          [value]="empresas"
           [tableStyle]="{ 'min-width': '50rem' }"
           [paginator]="true"
           [rows]="10"
@@ -29,7 +29,7 @@
                   size="50"
                   placeholder="Procurar por nome"
                   [(ngModel)]="filtroGlobal"
-                  (input)="aplicarFiltroGlobal()"
+                  (input)="onFiltroGlobalChange()"
                 />
               </p-iconField>
             </div>
@@ -59,7 +59,7 @@
                   class="p-button-text"
                   style="color: #2c3e50"
                   pTooltip="Editar"
-                  (click)="editar(empresa.id)"
+                  (click)="editar(empresa)"
                 ></button>
                 <button
                   pButton
@@ -67,7 +67,7 @@
                   class="p-button-text"
                   style="color: #e74c3c"
                   pTooltip="Excluir"
-                  (click)="excluir(empresa.id)"
+                  (click)="excluir(empresa)"
                 ></button>
               </td>
             </tr>

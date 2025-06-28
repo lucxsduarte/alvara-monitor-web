@@ -7,6 +7,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {EmpresaService} from "../../services/empresa.service";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
+import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
 
 @Component({
   selector: 'app-cadastrar-empresa',
@@ -30,7 +31,6 @@ export class CadastrarEmpresaComponent implements OnInit {
   private empresaService = inject(EmpresaService);
   private messageService = inject(MessageService);
 
-
   ngOnInit(): void {
     this.empresaForm = this.fb.group({
       nome: ['', Validators.required],
@@ -38,52 +38,40 @@ export class CadastrarEmpresaComponent implements OnInit {
       vencFuncionamento: [null],
       vencPolicia: [null],
       vencVigilancia: [null],
+    }, {
+      validators: [requireAtLeastOneDateValidator()]
     });
   }
 
   save(): void {
     if (this.empresaForm.invalid) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro de validação',
-        detail: 'Preencha o nome da conveniada corretamente.',
-      });
+      const detail = this.empresaForm.hasError('requireAtLeastOneDate')
+        ? 'Preencha pelo menos uma data de alvará.'
+        : 'Preencha os campos corretamente.';
+
+      this.messageService.add({ severity: 'error', summary: 'Erro de validação', detail });
       return;
     }
 
-    const {
-      vencBombeiros,
-      vencFuncionamento,
-      vencPolicia,
-      vencVigilancia
-    } = this.empresaForm.value;
+    const formValues = this.empresaForm.value;
 
-    const nenhumaDataPreenchida = !vencBombeiros && !vencFuncionamento && !vencPolicia && !vencVigilancia;
-    if (nenhumaDataPreenchida) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro de validação',
-        detail: 'Preencha pelo menos uma data de alvará.',
-      });
-      return;
-    }
+    const formatDate = (date: Date | null): string | null => date ? date.toISOString().split('T')[0] : null;
 
-    const dados = this.empresaForm.value;
-    this.empresaService.saveCompany(dados).subscribe({
+    const dadosParaApi = {
+      ...formValues,
+      vencBombeiros: formatDate(formValues.vencBombeiros),
+      vencFuncionamento: formatDate(formValues.vencFuncionamento),
+      vencPolicia: formatDate(formValues.vencPolicia),
+      vencVigilancia: formatDate(formValues.vencVigilancia),
+    };
+
+    this.empresaService.salvarEmpresa(dadosParaApi).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Empresa cadastrada com sucesso!',
-        });
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa cadastrada com sucesso!' });
         this.empresaForm.reset();
       },
       error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: 'Não foi possível cadastrar a empresa.',
-        });
+        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível cadastrar a empresa.' });
         console.error('Erro ao salvar:', error);
       }
     });

@@ -1,17 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { Empresa } from "../models/empresa.model";
 import { environment } from "../../../environments/environment";
-import {addDaysAndFormat} from "../../../utils/date.utils";
+import {addDaysAndFormat, createDateFromYYYYMMDD} from "../../../utils/date.utils";
+import {FiltroStatusEmpresa} from "../models/enums/FiltroStatusEmpresa";
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmpresaService {
-  private apiUrl = 'http://localhost:8080/api/empresas';
+  private readonly apiUrl = `${environment.apiUrl}/empresas`;
   private http = inject(HttpClient);
-  private usarMock = environment.useMockData;
 
   private empresasBaseMock: Partial<Empresa>[] = [
     { id: 1, nome: "Alpha Alimentos" },
@@ -35,49 +35,80 @@ export class EmpresaService {
     { id: 19, nome: "Tau Restaurante" },
     { id: 20, nome: "Upsilon Academia" }
   ];
-
   private empresasMockComDatas: Empresa[] | null = null;
 
   constructor() {
-    if (this.usarMock) {
+    if (environment.useMockData && !this.empresasMockComDatas) {
       this.empresasMockComDatas = this.generateDynamicMockData();
     }
   }
 
-  getCompanies(): Observable<Empresa[]> {
-    if (this.usarMock) {
-      return of([...this.empresasMockComDatas!]);
+  buscarEmpresas(nome?: string, status?: FiltroStatusEmpresa): Observable<Empresa[]> {
+    if (environment.useMockData) {
+      let empresasFiltradas = [...this.empresasMockComDatas!];
+
+      if (nome) {
+        empresasFiltradas = empresasFiltradas.filter(e => e.nome.toLowerCase().includes(nome.toLowerCase()));
+      }
+
+      if (status === FiltroStatusEmpresa.VENCIDOS) {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        empresasFiltradas = empresasFiltradas.filter(e => {
+          const vencimentos = [e.vencBombeiros, e.vencFuncionamento, e.vencPolicia, e.vencVigilancia];
+          return vencimentos.some(v => v && createDateFromYYYYMMDD(v)! < hoje);
+        });
+      }
+
+      return of(empresasFiltradas);
+    } else {
+      let params = new HttpParams();
+      if (nome) { params = params.set('nome', nome); }
+      if (status) { params = params.set('status', status); }
+      return this.http.get<Empresa[]>(this.apiUrl, { params });
     }
-    return this.http.get<Empresa[]>(this.apiUrl);
   }
 
-  saveCompany(empresa: Empresa): Observable<any> {
-    if (this.usarMock) {
-      const novoId = this.empresasMockComDatas!.length + 1;
-      const novaEmpresa = { ...empresa, id: novoId };
+  buscarEmpresaPorId(id: number): Observable<Empresa | undefined> {
+    if (environment.useMockData) {
+      const empresa = this.empresasMockComDatas!.find(e => e.id === id);
+      return of(empresa);
+    } else {
+      return this.http.get<Empresa>(`${this.apiUrl}/${id}`);
+    }
+  }
+
+  salvarEmpresa(empresa: Empresa): Observable<any> {
+    if (environment.useMockData) {
+      const novoId = Math.max(...this.empresasMockComDatas!.map(e => e.id)) + 1;
+      const novaEmpresa = { ...empresa, id: novoId } as Empresa;
       this.empresasMockComDatas!.push(novaEmpresa);
       return of(novaEmpresa);
+    } else {
+      return this.http.post<Empresa>(this.apiUrl, empresa);
     }
-    return this.http.post(this.apiUrl, empresa);
   }
 
-  deleteCompany(id: number): Observable<void> {
-    if (this.usarMock) {
+  deletarEmpresa(id: number): Observable<void> {
+    if (environment.useMockData) {
       this.empresasMockComDatas = this.empresasMockComDatas!.filter(emp => emp.id !== id);
       return of(void 0);
+    } else {
+      return this.http.delete<void>(`${this.apiUrl}/${id}`);
     }
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  updateCompany(empresa: Empresa): Observable<Empresa> {
-    if (this.usarMock) {
+  atualizarEmpresa(empresa: Empresa): Observable<Empresa> {
+    if (environment.useMockData) {
       const index = this.empresasMockComDatas!.findIndex(e => e.id === empresa.id);
       if (index >= 0) {
         this.empresasMockComDatas![index] = empresa;
       }
+
       return of(empresa);
+    } else {
+      return this.http.put<Empresa>(`${this.apiUrl}/${empresa.id}`, empresa);
     }
-    return this.http.put<Empresa>(`${this.apiUrl}/${empresa.id}`, empresa);
   }
 
   private generateDynamicMockData(): Empresa[] {
