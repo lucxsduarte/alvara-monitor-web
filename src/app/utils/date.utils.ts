@@ -1,9 +1,13 @@
-export function createDateFromYYYYMMDD(dateString: string | null): Date | null {
-  if (!dateString) {
+export function createDateFromYYYYMMDD(dateValue: string | Date | null | undefined): Date | null {
+  if (!dateValue) {
     return null;
   }
 
-  const parts = dateString.split('-').map(Number);
+  if (dateValue instanceof Date) {
+    return dateValue;
+  }
+
+  const parts = dateValue.split('-').map(Number);
   return new Date(parts[0], parts[1] - 1, parts[2]);
 }
 
