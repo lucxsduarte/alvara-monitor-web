@@ -7,6 +7,11 @@
 
 **⚠️ Atenção:** Esta é uma versão de demonstração (portfólio) que opera com dados 100% mockados. Nenhuma informação real é necessária ou armazenada.
 
+**🚀 Acesse a demonstração ao vivo do projeto aqui: [demo-monitoramento-alvara.vercel.app](https://demo-monitoramento-alvara.vercel.app/)**
+
+> ℹ️ **Credenciais para Demonstração:**
+> > **Login:** `admin`
+> > **Senha:** `123`
 ---
 
 ### 💡 Sobre o Projeto
