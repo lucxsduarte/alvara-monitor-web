@@ -12,7 +12,7 @@
         <input type="password" id="senha" name="senha" [(ngModel)]="senha" required />
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+      <button type="submit" [disabled]="loginForm.invalid || isLoading">Entrar</button>
 
       <p *ngIf="erroLogin" class="error-message">{{ erroLogin }}</p>
     </form>

@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AuthService} from "../../core/auth/auth.service";
 
 @Component({
@@ -15,18 +15,28 @@ export class LoginPage {
   usuario: string = '';
   senha: string = '';
   erroLogin: string = '';
+  isLoading = false;
 
   private router = inject(Router);
   private authService = inject(AuthService);
 
   fazerLogin() {
     this.erroLogin = '';
+    this.isLoading = true;
 
-    this.authService.login({ name: this.usuario, password: this.senha }).subscribe((response) => {
-      if (response) {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.erroLogin = 'Usuário e/ou senha inválidos';
+    this.authService.login({login: this.usuario, senha: this.senha}).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        if (response) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.erroLogin = 'Usuário e/ou senha inválidos';
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.erroLogin = 'Ocorreu um erro ao tentar conectar. Tente novamente.';
+        console.error('Erro na subscrição do login:', err);
       }
     });
   }
