@@ -44,11 +44,13 @@ O **Monitoramento de Alvarás** foi idealizado como uma solução moderna para c
 
 - **Arquitetura Flexível (Mock/Real):** Capacidade de rodar com dados mockados (para portfólio) ou conectado a uma API real, controlado por ambientes do Angular.
 - **Integração com API REST:** Consumo de uma API backend para todas as operações de CRUD (Create, Read, Update, Delete) de empresas.
+- **Autenticação Real com JWT:** Fluxo completo de login que se comunica com o backend, recebe um JSON Web Token, o armazena e o utiliza para autenticar requisições futuras.
+- **`HttpInterceptor` para Tokens:** Anexa automaticamente o token `Bearer` a todas as chamadas para endpoints protegidos da API.
 - **Filtragem Reativa no Lado do Servidor:** A busca por nome e os filtros de status (ex: alvarás vencidos) são processados pelo backend, garantindo alta performance e escalabilidade.
 - **Dashboard Otimizado:** O dashboard faz uma única chamada a um endpoint de resumo (`/api/dashboard/summary`) que entrega todos os KPIs já calculados, minimizando o tráfego de rede.
-- **Autenticação Simulada:** Fluxo de login/logout com guarda de rotas (`CanActivate`) para proteger o acesso ao sistema.
 - **Design Responsivo:** Experiência de uso consistente em desktops, tablets e celulares.
 - **Componentização e Reatividade:** Uso de componentes `standalone`, `DynamicDialog` do PrimeNG para modais e RxJS para gerenciar fluxos de dados de forma reativa e eficiente.
+- **Guarda de Rotas (`CanActivate`):** Protege as rotas da aplicação, permitindo acesso apenas a usuários autenticados.
 
 ---
 
@@ -100,6 +102,8 @@ ng serve
 Este projeto continua em desenvolvimento. Os próximos passos planejados são:
 
 - [X] **Integração com Backend:** Conexão do frontend com a API real em Java.
+- [X] **Implementação de Segurança:** Fluxo de autenticação JWT de ponta a ponta.
+- [ ] **Testes Automatizados:** Adição de testes de unidade e integração para garantir a qualidade do código.
 - [ ] **Notificações por Email:** Implementar um serviço de envio de emails para alertar sobre vencimentos próximos.
 - [ ] **Perfis de Usuário:** Diferenciar permissões entre administradores e usuários comuns.
 - [ ] **Melhorias de UI/UX:** Refinar a experiência do usuário com base em feedbacks.
