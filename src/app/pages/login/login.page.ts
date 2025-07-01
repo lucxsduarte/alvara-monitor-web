@@ -3,11 +3,12 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from "../../core/auth/auth.service";
+import {Button} from "primeng/button";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Button],
   templateUrl: './login.page.html',
   styleUrl: './login.page.scss'
 })
@@ -39,5 +40,9 @@ export class LoginPage {
         console.error('Erro na subscrição do login:', err);
       }
     });
+  }
+
+  irParaDemo(): void {
+    window.open('https://demo-monitoramento-alvara.vercel.app', '_blank');
   }
 }

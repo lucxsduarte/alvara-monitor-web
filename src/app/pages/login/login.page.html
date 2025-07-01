@@ -1,6 +1,6 @@
 <section class="login-container">
   <div class="login-card">
-    <h2>Login</h2>
+    <h2>Monitoramento de Alvarás</h2>
     <form (ngSubmit)="fazerLogin()" #loginForm="ngForm">
       <div class="form-group">
         <label for="usuario">Usuário</label>
@@ -12,7 +12,21 @@
         <input type="password" id="senha" name="senha" [(ngModel)]="senha" required />
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid || isLoading">Entrar</button>
+      <div class="botoes-container">
+        <p-button
+          label="Modo Portfólio"
+          icon="pi pi-external-link"
+          styleClass="p-button-secondary p-button-outlined"
+          (click)="irParaDemo()">
+        </p-button>
+
+        <p-button
+          type="submit"
+          [label]="isLoading ? 'Entrando...' : 'Entrar'"
+          [disabled]="loginForm.invalid || isLoading"
+          styleClass="p-button-raised">
+        </p-button>
+      </div>
 
       <p *ngIf="erroLogin" class="error-message">{{ erroLogin }}</p>
     </form>
