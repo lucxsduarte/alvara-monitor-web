@@ -78,7 +78,7 @@ export class EmpresaService {
     }
   }
 
-  salvarEmpresa(empresa: Empresa): Observable<any> {
+  salvarEmpresa(empresa: Omit<Empresa, 'id'>): Observable<Empresa> {
     if (environment.useMockData) {
       const novoId = Math.max(...this.empresasMockComDatas!.map(e => e.id)) + 1;
       const novaEmpresa = { ...empresa, id: novoId } as Empresa;
