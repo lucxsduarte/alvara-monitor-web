@@ -51,6 +51,7 @@ O **Monitoramento de Alvarás** foi idealizado como uma solução moderna para c
 - **Design Responsivo:** Experiência de uso consistente em desktops, tablets e celulares.
 - **Componentização e Reatividade:** Uso de componentes `standalone`, `DynamicDialog` do PrimeNG para modais e RxJS para gerenciar fluxos de dados de forma reativa e eficiente.
 - **Guarda de Rotas (`CanActivate`):** Protege as rotas da aplicação, permitindo acesso apenas a usuários autenticados.
+- **Testes de Unidade e Componente:** Cobertura de testes com Karma e Jasmine para garantir a qualidade e a confiabilidade dos serviços e componentes principais.
 
 ---
 
@@ -94,19 +95,6 @@ Para testar a integração completa.
 # Siga os passos 1 a 3 acima, e depois execute:
 ng serve
 ```
-
----
-
-### 🎯 Próximos Passos (Roadmap)
-
-Este projeto continua em desenvolvimento. Os próximos passos planejados são:
-
-- [X] **Integração com Backend:** Conexão do frontend com a API real em Java.
-- [X] **Implementação de Segurança:** Fluxo de autenticação JWT de ponta a ponta.
-- [ ] **Testes Automatizados:** Adição de testes de unidade e integração para garantir a qualidade do código.
-- [ ] **Notificações por Email:** Implementar um serviço de envio de emails para alertar sobre vencimentos próximos.
-- [ ] **Perfis de Usuário:** Diferenciar permissões entre administradores e usuários comuns.
-- [ ] **Melhorias de UI/UX:** Refinar a experiência do usuário com base em feedbacks.
 
 ---
 
