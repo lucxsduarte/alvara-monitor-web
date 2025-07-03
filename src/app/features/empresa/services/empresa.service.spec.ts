@@ -29,7 +29,7 @@ describe('EmpresaService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getCompanies', () => {
+  describe('buscarEmpresas', () => {
     it('deve chamar GET /empresas sem parâmetros quando nenhum filtro é fornecido', () => {
       service.buscarEmpresas().subscribe();
 

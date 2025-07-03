@@ -12,25 +12,12 @@ import {Router} from "@angular/router";
 import { createDateFromYYYYMMDD } from '../../utils/date.utils';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
+import {AlvaraVencendoDTO, DashboardSummaryDTO} from "./models/dashboard.dto";
 
 interface AlvaraVencendo {
   empresa: Empresa;
   tipoAlvara: string;
   vencimento: Date;
-}
-
-interface AlvaraVencendoDTO {
-  empresaId: number;
-  nomeEmpresa: string;
-  tipoAlvara: string;
-  dataVencimento: string;
-}
-
-interface DashboardSummaryDTO {
-  totalEmpresas: number;
-  totalAlvarasVencidos: number;
-  alvarasVencendo30Dias: AlvaraVencendoDTO[];
-  proximosVencimentos: AlvaraVencendoDTO[];
 }
 
 @Component({

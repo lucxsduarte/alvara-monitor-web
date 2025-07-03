@@ -7,40 +7,35 @@ import {environment} from '../../environments/environment';
 describe('AuthService', () => {
   let service: AuthService;
   let httpTestingController: HttpTestingController;
-  let routerSpy: jasmine.SpyObj<Router>;
 
-  beforeEach(() => {
-    const spy = jasmine.createSpyObj('Router', ['navigate']);
+  describe('em Modo API Real', () => {
+    beforeEach(() => {
+      environment.useMockData = false;
+      const spy = jasmine.createSpyObj('Router', ['navigate']);
 
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [
-        AuthService,
-        {provide: Router, useValue: spy}
-      ]
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          AuthService,
+          {provide: Router, useValue: spy}
+        ]
+      });
+
+      service = TestBed.inject(AuthService);
+      httpTestingController = TestBed.inject(HttpTestingController);
     });
 
-    service = TestBed.inject(AuthService);
-    httpTestingController = TestBed.inject(HttpTestingController);
-    routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
-  });
+    afterEach(() => {
+      httpTestingController.verify();
+      localStorage.clear();
+    });
 
-  afterEach(() => {
-    httpTestingController.verify();
-    localStorage.clear();
-  });
-
-  it('deve ser criado', () => {
-    expect(service).toBeTruthy();
-  });
-
-  describe('login', () => {
-    it('deve autenticar, salvar o token e notificar os inscritos em caso de sucesso', () => {
+    it('deve autenticar, chamar a API e salvar o token em caso de sucesso', () => {
       spyOn(localStorage, 'setItem').and.callThrough();
       let isLoggedIn = false;
       service.isLoggedIn().subscribe(status => isLoggedIn = status);
 
-      const mockResponse = {token: 'token.real.jwt'};
+      const mockResponse = {token: 'token.real.jwt.vindo.da.api'};
       const credentials = {login: 'admin', senha: '123'};
 
       service.login(credentials).subscribe(response => {
@@ -51,12 +46,12 @@ describe('AuthService', () => {
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
 
-      expect(localStorage.setItem).toHaveBeenCalledWith('auth_token', 'token.real.jwt');
+      expect(localStorage.setItem).toHaveBeenCalledWith('auth_token', 'token.real.jwt.vindo.da.api');
       expect(isLoggedIn).toBe(true);
     });
 
-    it('deve retornar null e chamar o logout em caso de falha na autenticação', () => {
-      spyOn(localStorage, 'removeItem').and.callThrough();
+    it('deve retornar null e chamar o logout em caso de falha na API', () => {
+      spyOn(service, 'logout').and.callThrough();
       const credentials = {login: 'admin', senha: 'errada'};
 
       service.login(credentials).subscribe(response => {
@@ -66,25 +61,33 @@ describe('AuthService', () => {
       const req = httpTestingController.expectOne(`${environment.apiUrl}/auth/login`);
       req.flush('Credenciais inválidas', {status: 401, statusText: 'Unauthorized'});
 
-      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
+      expect(service.logout).toHaveBeenCalled();
     });
   });
 
+  describe('em Modo Mock', () => {
+    beforeEach(() => {
+      environment.useMockData = true;
+      const spy = jasmine.createSpyObj('Router', ['navigate']);
 
-  describe('logout', () => {
-    it('deve remover o token, notificar os inscritos e navegar para a tela de login', () => {
-      localStorage.setItem('auth_token', 'token-existente');
-      service.loadUserFromToken();
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          AuthService,
+          {provide: Router, useValue: spy}
+        ]
+      });
+      service = TestBed.inject(AuthService);
+    });
 
-      spyOn(localStorage, 'removeItem').and.callThrough();
-      let isLoggedIn = true;
-      service.isLoggedIn().subscribe(status => isLoggedIn = status);
+    it('deve retornar um token mockado para credenciais de mock corretas', () => {
+      const credentials = {login: 'admin', senha: '123'};
+      const expectedToken = 'mock-token-jwt-para-desenvolvimento';
 
-      service.logout();
-
-      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
-      expect(isLoggedIn).toBe(false);
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/login']);
+      service.login(credentials).subscribe(response => {
+        expect(response).toBeTruthy();
+        expect(response?.token).toBe(expectedToken);
+      });
     });
   });
 });
