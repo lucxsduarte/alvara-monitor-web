@@ -12,6 +12,10 @@
   height: 4rem;
 }
 
+:host ::ng-deep .p-toolbar-group-start {
+  gap: 1rem;
+}
+
 :host ::ng-deep .app-topbar .p-button.p-button-text {
   color: white;
   &:hover {

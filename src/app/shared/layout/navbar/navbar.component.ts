@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
-      this.isAdmin = user?.roles.includes('ROLE_ADMIN') ?? false;
+      this.isAdmin = this.authService.userHasRole('ROLE_ADMIN');
     });
   }
 
@@ -49,11 +49,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   setupMenus() {
     this.empresaMenuItems = [
-      { label: 'Ver todas', icon: PrimeIcons.EYE, routerLink: '/empresas' },
-      { label: 'Adicionar', icon: PrimeIcons.PLUS, routerLink: '/empresas/cadastrar' },
+      {
+        label: 'Ver todas',
+        icon: PrimeIcons.EYE,
+        routerLink: '/empresas'
+      },
+      {
+        label: 'Adicionar',
+        icon: PrimeIcons.PLUS,
+        routerLink: '/empresas/cadastrar'
+      },
     ];
+
     this.adminMenuItems = [
-      { label: 'Gerenciar Usuários', icon: PrimeIcons.USERS, routerLink: '/admin/users' }
+      {
+        label: 'Gerenciar Usuários',
+        icon: PrimeIcons.USERS,
+        routerLink: '/admin/usuarios'
+      }
     ];
   }
 

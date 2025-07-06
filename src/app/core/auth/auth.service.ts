@@ -113,8 +113,15 @@ export class AuthService {
   }
 
   private createMockAdminToken(): string {
-    const header = btoa(JSON.stringify({alg: 'HS256', typ: 'JWT'}));
-    const payload = btoa(JSON.stringify({sub: 'admin', roles: ['ROLE_ADMIN'], exp: Date.now() / 1000 + (2 * 60 * 60)}));
+    const header = btoa(JSON.stringify({
+      alg: 'HS256',
+      typ: 'JWT'
+    }));
+    const payload = btoa(JSON.stringify({
+      sub: 'admin',
+      roles: ['ROLE_ADMIN'],
+      exp: Date.now() / 1000 + (2 * 60 * 60)
+    }));
     const signature = 'mock-signature';
     return `${header}.${payload}.${signature}`;
   }

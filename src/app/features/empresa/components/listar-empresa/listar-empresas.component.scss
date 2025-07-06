@@ -38,26 +38,3 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
-
-::ng-deep .p-datatable thead th {
-  background-color: #eeeeee;
-  color: #333;
-  font-weight: bold;
-  text-align: left;
-  padding: 10px;
-  font-size: 1rem;
-}
-
-::ng-deep .p-datatable tbody td {
-  background-color: #ffffff;
-  padding: 2px 10px;
-  color: #555;
-  border-top: 1px solid #eee;
-  font-size: 1rem;
-  text-align: left;
-}
-
-::ng-deep .linha-vencida {
-  background-color: rgba(231, 76, 60, 0.3);
-  color: white;
-}
