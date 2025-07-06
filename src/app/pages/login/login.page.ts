@@ -29,7 +29,7 @@ export class LoginPage {
       next: (response) => {
         this.isLoading = false;
         if (response) {
-          this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/dashboard']);
         } else {
           this.erroLogin = 'Usuário e/ou senha inválidos';
         }

@@ -3,9 +3,22 @@ import {BehaviorSubject, catchError, Observable, of, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {jwtDecode} from "jwt-decode";
 
 interface LoginResponse {
   token: string;
+}
+
+interface DecodedToken {
+  sub: string;
+  roles: string[];
+  exp: number;
+  iss: string;
+}
+
+export interface AuthenticatedUser {
+  login: string;
+  roles: string[];
 }
 
 @Injectable({
@@ -18,7 +31,9 @@ export class AuthService {
   private readonly tokenKey = 'auth_token';
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
-  private currentUserSubject = new BehaviorSubject<{ login: string } | null>(null);
+  private currentUserSubject = new BehaviorSubject<AuthenticatedUser | null>(null);
+
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor() {
     this.loadUserFromToken();
@@ -27,9 +42,9 @@ export class AuthService {
   login(credentials: { login: string; senha: string }): Observable<LoginResponse | null> {
     if (environment.useMockData) {
       if (credentials.login === 'admin' && credentials.senha === '123') {
-        const mockToken = 'mock-token-jwt-para-desenvolvimento';
-        this.handleAuthentication(mockToken);
-        return of({token: mockToken});
+        const mockAdminToken = this.createMockAdminToken();
+        this.handleAuthentication(mockAdminToken);
+        return of({token: mockAdminToken});
       }
 
       return of(null);
@@ -51,7 +66,7 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     this.isAuthenticatedSubject.next(false);
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    void this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
@@ -62,19 +77,45 @@ export class AuthService {
     return this.isAuthenticatedSubject.asObservable();
   }
 
+  public userHasRole(requiredRole: string): boolean {
+    return this.currentUserSubject.getValue()?.roles.includes(requiredRole) ?? false;
+  }
+
   loadUserFromToken(): void {
     const token = this.getToken();
     if (token) {
-      this.isAuthenticatedSubject.next(true);
+      this.handleAuthentication(token);
+    } else {
+      this.isAuthenticatedSubject.next(false);
+      this.currentUserSubject.next(null);
     }
   }
 
   private handleAuthentication(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-    this.isAuthenticatedSubject.next(true);
+    try {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      const user: AuthenticatedUser = {
+        login: decodedToken.sub,
+        roles: decodedToken.roles || []
+      };
+
+      localStorage.setItem(this.tokenKey, token);
+      this.isAuthenticatedSubject.next(true);
+      this.currentUserSubject.next(user);
+    } catch (error) {
+      console.error("[AuthService - handleAuthentication] Erro ao decodificar token. Fazendo logout.", error);
+      this.logout();
+    }
   }
 
   private hasToken(): boolean {
     return !!this.getToken();
+  }
+
+  private createMockAdminToken(): string {
+    const header = btoa(JSON.stringify({alg: 'HS256', typ: 'JWT'}));
+    const payload = btoa(JSON.stringify({sub: 'admin', roles: ['ROLE_ADMIN'], exp: Date.now() / 1000 + (2 * 60 * 60)}));
+    const signature = 'mock-signature';
+    return `${header}.${payload}.${signature}`;
   }
 }

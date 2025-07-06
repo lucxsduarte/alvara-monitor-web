@@ -155,10 +155,10 @@ export class DashboardPage implements OnInit {
   }
 
   irParaGerenciamentoAlvaras() {
-    this.router.navigate(['/empresas'], { queryParams: { filtro: 'vencidos' } });
+    void this.router.navigate(['/empresas'], { queryParams: { filtro: 'vencidos' } });
   }
 
   irParaEmpresa(empresaId: number) {
-    this.router.navigate(['/empresas'], { queryParams: { filtro: 'empresa', id: empresaId } });
+    void this.router.navigate(['/empresas'], { queryParams: { filtro: 'empresa', id: empresaId } });
   }
 }

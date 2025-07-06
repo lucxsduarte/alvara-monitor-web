@@ -4,6 +4,8 @@ import {DashboardPage} from "./pages/dashboard/dashboard.page";
 import {ListarEmpresasComponent} from "./features/empresa/components/listar-empresa/listar-empresas.component";
 import {CadastrarEmpresaComponent} from "./features/empresa/components/cadastrar-empresa/cadastrar-empresa.component";
 import {LoginPage} from "./pages/login/login.page";
+import {UserManagementPage} from "./pages/admin/user-management/user-management.page";
+import {roleGuard} from "./core/auth/role.guard";
 
 export const routes: Routes = [
   {
@@ -17,13 +19,27 @@ export const routes: Routes = [
   },
   {
     path: 'empresas',
-    component: ListarEmpresasComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        component: ListarEmpresasComponent
+      },
+      {
+        path: 'cadastrar',
+        component: CadastrarEmpresaComponent
+      }
+    ]
   },
   {
-    path: 'empresas/cadastrar',
-    component: CadastrarEmpresaComponent,
-    canActivate: [authGuard]
+    path: 'admin',
+    canActivate: [roleGuard('ROLE_ADMIN')],
+    children: [
+      {
+        path: 'usuarios',
+        component: UserManagementPage
+      },
+    ]
   },
   {
     path: '',

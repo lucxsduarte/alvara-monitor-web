@@ -1,7 +1,7 @@
+import {inject} from '@angular/core';
 import {CanActivateFn, Router} from '@angular/router';
-import {inject} from "@angular/core";
-import {AuthService} from "./auth.service";
-import {map, take, tap} from "rxjs";
+import {AuthService} from './auth.service';
+import {map, take, tap} from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
 
@@ -12,7 +12,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     take(1),
     tap(loggedIn => {
       if (!loggedIn) {
-        router.navigate(['/login']);
+        void router.navigate(['/login']);
       }
     }),
     map(loggedIn => loggedIn),

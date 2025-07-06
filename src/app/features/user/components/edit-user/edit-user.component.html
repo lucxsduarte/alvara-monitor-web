@@ -1,0 +1,32 @@
+<div class="wrapper">
+
+  <div class="p-fluid">
+    <form [formGroup]="userForm" (ngSubmit)="save()">
+      <div class="field">
+        <p-floatLabel>
+          <input id="login" type="text" pInputText formControlName="login" />
+          <label for="login">Username*</label>
+        </p-floatLabel>
+      </div>
+
+      <div class="field">
+        <p-floatLabel>
+          <p-dropdown
+            id="role"
+            [options]="roles"
+            formControlName="role"
+            optionLabel="label"
+            optionValue="value">
+          </p-dropdown>
+          <label for="role">Permission (Role)</label>
+        </p-floatLabel>
+      </div>
+    </form>
+  </div>
+
+  <div class="options">
+    <p-button label="Cancelar" styleClass="p-button-text" (click)="cancel()"></p-button>
+    <p-button label="Salvar" type="submit" [disabled]="userForm.invalid" (click)="save()"></p-button>
+  </div>
+
+</div>

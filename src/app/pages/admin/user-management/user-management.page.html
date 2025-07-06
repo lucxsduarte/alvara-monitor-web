@@ -1,0 +1,117 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<section class="dashboard-container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Gerenciamento de usuários</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="userForm" (ngSubmit)="createUser()">
+
+        <div class="form-container">
+          <div class="p-fluid">
+            <div class="field">
+              <p-floatLabel>
+                <input
+                  id="login"
+                  type="text"
+                  pInputText
+                  formControlName="login"
+                  [ngClass]="{ 'ng-invalid ng-dirty': userForm.get('login')?.invalid && userForm.get('login')?.touched }"
+                />
+                <label for="login">Usuário*</label>
+              </p-floatLabel>
+              <small *ngIf="userForm.get('login')?.invalid && userForm.get('login')?.touched" class="p-error">
+                Usuário é obrigatório.
+              </small>
+            </div>
+
+            <div class="field">
+              <p-floatLabel>
+                <p-password
+                  id="password"
+                  formControlName="password"
+                  [toggleMask]="true"
+                  [feedback]="false"
+                  [ngClass]="{ 'ng-invalid ng-dirty': userForm.get('password')?.invalid && userForm.get('password')?.touched }">
+                </p-password>
+                <label for="password">Senha*</label>
+              </p-floatLabel>
+              <small *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="p-error">
+                Senha é obrigatória (min. 6 caracteres).
+              </small>
+            </div>
+
+            <div class="field">
+              <p-floatLabel>
+                <p-dropdown
+                  id="role"
+                  [options]="roles"
+                  formControlName="role"
+                  optionLabel="label"
+                  optionValue="value">
+                </p-dropdown>
+                <label for="role">Permissão</label>
+              </p-floatLabel>
+            </div>
+          </div>
+
+          <div class="mt-3">
+            <p-button
+              label="Salvar"
+              type="submit"
+              styleClass="p-button-primary"
+              [loading]="isLoading"
+              [disabled]="userForm.invalid || isLoading">
+            </p-button>
+          </div>
+        </div> </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="pi pi-exclamation-circle" style="color: red"></span>
+      <h2>Usuários cadastrados</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="users.length > 0; else semUsuarios">
+        <p-table
+          [value]="users"
+          [paginator]="true"
+          [rows]="5"
+          [tableStyle]="{ 'min-width': '50rem' }"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Usuário</th>
+              <th style="text-align: center">Permissão</th>
+              <th style="text-align: center">Ações</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user>
+            <tr>
+              <td style="width: 50%;">{{ user.login }}</td>
+              <td style="width: 25%; text-align: center">
+                <p-tag
+                  [value]="user.role === 'ROLE_ADMIN' ? 'Admin' : 'Usuário Padrão'"
+                  [severity]="user.role === 'ROLE_ADMIN' ? 'danger' : 'info'">
+                </p-tag>
+              </td>
+              <td style="width: 25%; text-align: center">
+                <p-button icon="pi pi-pencil" styleClass="p-button-text" (click)="editUser(user)" pTooltip="Edit User"></p-button>
+                <p-button icon="pi pi-trash" styleClass="p-button-text p-button-danger" (click)="deleteUser(user)" pTooltip="Delete User"></p-button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <ng-template #semUsuarios>
+        <p class="no-alvara">Nenhum usuário encontrado.</p>
+      </ng-template>
+    </div>
+  </div>
+</section>
