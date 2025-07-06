@@ -1,74 +1,63 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
-import {MenubarModule} from "primeng/menubar";
-import {MenuItem, PrimeIcons} from "primeng/api";
-import {SidebarModule} from "primeng/sidebar";
-import {Subscription} from "rxjs";
-import {AuthService} from "../../../core/auth/auth.service";
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
+import { MenuItem, PrimeIcons } from "primeng/api";
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, MenubarModule, SidebarModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ToolbarModule,
+    ButtonModule,
+    MenuModule,
+    SidebarModule
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  empresaMenuItems: MenuItem[] = [];
+  adminMenuItems: MenuItem[] = [];
+
+  isLoggedIn = false;
+  isAdmin = false;
+  sidebarVisible = false;
+
   private authSubscription!: Subscription;
   private authService = inject(AuthService);
 
-  items: MenuItem[] = [];
-
   ngOnInit() {
-    this.authSubscription = this.authService.isLoggedIn().subscribe(() => {
-      this.setupMenu();
+    this.setupMenus();
+
+    this.authSubscription = this.authService.currentUser$.subscribe(user => {
+      this.isLoggedIn = !!user;
+      this.isAdmin = user?.roles.includes('ROLE_ADMIN') ?? false;
     });
   }
 
   ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    this.authSubscription.unsubscribe();
   }
 
-  setupMenu() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: PrimeIcons.HOME,
-        routerLink: '/dashboard'
-      },
-      {
-        label: 'Empresas',
-        icon: PrimeIcons.BUILDING,
-        items: [
-          {
-            label: 'Ver todas',
-            icon: PrimeIcons.EYE,
-            routerLink: '/empresas'
-          },
-          {
-            label: 'Adicionar',
-            icon: PrimeIcons.PLUS,
-            routerLink: '/empresas/cadastrar'
-          },
-        ]
-      },
+  setupMenus() {
+    this.empresaMenuItems = [
+      { label: 'Ver todas', icon: PrimeIcons.EYE, routerLink: '/empresas' },
+      { label: 'Adicionar', icon: PrimeIcons.PLUS, routerLink: '/empresas/cadastrar' },
     ];
+    this.adminMenuItems = [
+      { label: 'Gerenciar Usuários', icon: PrimeIcons.USERS, routerLink: '/admin/users' }
+    ];
+  }
 
-    if (this.authService.userHasRole('ROLE_ADMIN')) {
-      this.items.push({
-        label: 'Admin',
-        icon: PrimeIcons.COG,
-        items: [
-          {
-            label: 'Gerenciar Usuários',
-            icon: PrimeIcons.USERS,
-            routerLink: '/admin/usuarios'
-          }
-        ]
-      });
-    }
+  logout(): void {
+    this.authService.logout();
   }
 }

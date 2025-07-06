@@ -6,11 +6,13 @@ import {CadastrarEmpresaComponent} from "./features/empresa/components/cadastrar
 import {LoginPage} from "./pages/login/login.page";
 import {UserManagementPage} from "./pages/admin/user-management/user-management.page";
 import {roleGuard} from "./core/auth/role.guard";
+import {loginGuard} from "./core/auth/login.guard";
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginPage
+    component: LoginPage,
+    canActivate: [loginGuard]
   },
   {
     path: 'dashboard',

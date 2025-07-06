@@ -1,8 +1,34 @@
-<p-menubar
-  [model]="items"
-  [autoDisplay]="false"
-  [autoHide]="true"
-  class="topbar"
-></p-menubar>
+<p-toolbar styleClass="app-topbar hidden md:flex"> <ng-template pTemplate="start">
+  <p-button label="Home" icon="pi pi-home" styleClass="p-button-text" routerLink="/dashboard"></p-button>
+  <p-button label="Empresas" icon="pi pi-building" styleClass="p-button-text" (click)="menuEmpresas.toggle($event)"></p-button>
 
+  <p-menu #menuEmpresas [model]="empresaMenuItems" [popup]="true"></p-menu>
+</ng-template>
 
+  <ng-template pTemplate="end">
+    <p-button *ngIf="isAdmin" label="Admin" icon="pi pi-cog" styleClass="p-button-text" (click)="menuAdmin.toggle($event)"></p-button>
+    <p-menu #menuAdmin [model]="adminMenuItems" [popup]="true"></p-menu>
+
+    <p-button *ngIf="isLoggedIn" label="Logout" icon="pi pi-sign-out" styleClass="p-button-text p-button-danger" (click)="logout()"></p-button>
+  </ng-template>
+
+</p-toolbar>
+
+<p-toolbar styleClass="app-topbar md:hidden"> <ng-template pTemplate="start">
+  <p-button label="Home" icon="pi pi-home" styleClass="p-button-text" routerLink="/dashboard"></p-button>
+</ng-template>
+
+  <ng-template pTemplate="end">
+    <p-button icon="pi pi-bars" styleClass="p-button-text" (click)="sidebarVisible = true"></p-button>
+  </ng-template>
+</p-toolbar>
+
+<p-sidebar [(visible)]="sidebarVisible" position="right">
+  <h3>Menu</h3>
+  <ul class="mobile-menu">
+    <li><a routerLink="/empresas" (click)="sidebarVisible = false">Ver Empresas</a></li>
+    <li><a routerLink="/empresas/cadastrar" (click)="sidebarVisible = false">Adicionar Empresa</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/admin/users" (click)="sidebarVisible = false">Gerenciar Usuários</a></li>
+    <li *ngIf="isLoggedIn"><a (click)="logout(); sidebarVisible = false;">Logout</a></li>
+  </ul>
+</p-sidebar>
