@@ -42,15 +42,15 @@ O **Monitoramento de Alvarás** foi idealizado como uma solução moderna para c
 
 ### ✨ Funcionalidades e Arquitetura
 
-- **Arquitetura Flexível (Mock/Real):** Capacidade de rodar com dados mockados (para portfólio) ou conectado a uma API real, controlado por ambientes do Angular.
 - **Integração com API REST:** Consumo de uma API backend para todas as operações de CRUD (Create, Read, Update, Delete) de empresas.
+- **Autorização Baseada em Perfil (Role):** Uso de guardas de rota (`CanActivate`) que verificam a permissão do usuário (`ROLE_ADMIN`) para proteger o acesso a áreas administrativas.
 - **Autenticação Real com JWT:** Fluxo completo de login que se comunica com o backend, recebe um JSON Web Token, o armazena e o utiliza para autenticar requisições futuras.
 - **`HttpInterceptor` para Tokens:** Anexa automaticamente o token `Bearer` a todas as chamadas para endpoints protegidos da API.
 - **Filtragem Reativa no Lado do Servidor:** A busca por nome e os filtros de status (ex: alvarás vencidos) são processados pelo backend, garantindo alta performance e escalabilidade.
 - **Dashboard Otimizado:** O dashboard faz uma única chamada a um endpoint de resumo (`/api/dashboard/summary`) que entrega todos os KPIs já calculados, minimizando o tráfego de rede.
 - **Design Responsivo:** Experiência de uso consistente em desktops, tablets e celulares.
 - **Componentização e Reatividade:** Uso de componentes `standalone`, `DynamicDialog` do PrimeNG para modais e RxJS para gerenciar fluxos de dados de forma reativa e eficiente.
-- **Guarda de Rotas (`CanActivate`):** Protege as rotas da aplicação, permitindo acesso apenas a usuários autenticados.
+- **Arquitetura Flexível (Mock/Real):** Capacidade de rodar com dados mockados (para portfólio) ou conectado a uma API real, controlado por ambientes do Angular.
 - **Testes de Unidade e Componente:** Cobertura de testes com Karma e Jasmine para garantir a qualidade e a confiabilidade dos serviços e componentes principais.
 
 ---
