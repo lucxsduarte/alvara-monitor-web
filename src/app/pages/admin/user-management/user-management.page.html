@@ -80,9 +80,11 @@
       <div *ngIf="users.length > 0; else semUsuarios">
         <p-table
           [value]="users"
-          [paginator]="true"
           [rows]="5"
           [tableStyle]="{ 'min-width': '50rem' }"
+          [resizableColumns]="true"
+          [scrollable]="true"
+          scrollHeight="350px"
         >
           <ng-template pTemplate="header">
             <tr>

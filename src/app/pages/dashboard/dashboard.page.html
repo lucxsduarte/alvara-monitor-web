@@ -74,9 +74,11 @@
         <div *ngIf="alvarasVencendo30.length > 0; else semVencimentos30">
           <p-table
             [value]="alvarasVencendo30"
-            [paginator]="true"
             [rows]="5"
             [tableStyle]="{ 'min-width': '50rem' }"
+            [resizableColumns]="true"
+            [scrollable]="true"
+            scrollHeight="350px"
           >
             <ng-template pTemplate="header">
               <tr>

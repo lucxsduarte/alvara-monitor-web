@@ -13,9 +13,11 @@
           #tabelaEmpresas
           [value]="empresas"
           [tableStyle]="{ 'min-width': '50rem' }"
-          [paginator]="true"
           [rows]="10"
           [globalFilterFields]="['nome']"
+          [resizableColumns]="true"
+          [scrollable]="true"
+          scrollHeight="600px"
         >
           <ng-template pTemplate="caption">
             <div>
