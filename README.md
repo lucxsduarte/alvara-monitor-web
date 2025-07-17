@@ -13,6 +13,8 @@
 
 > Solução frontend desenvolvida para automatizar e gerenciar o vencimento de alvarás para um escritório de contabilidade, onde o controle de vencimentos de alvarás era um processo manual e sujeito a erros.
 
+> Esta é uma aplicação full-stack em produção. A versão de produção se conecta a uma API Java e a um banco de dados PostgreSQL hospedados na nuvem. Para uma experiência rápida de portfólio, uma versão de demonstração com dados mockados também está disponível.
+
 > **⚠️ Atenção:** A demonstração online acima roda com **dados mockados** para uma experiência de portfólio rápida e acessível. O código-fonte, no entanto, está **totalmente integrado a uma API backend** e pode ser executado em modo de desenvolvimento real.
 
 **🚀 Acesse a demonstração ao vivo do projeto aqui: [demo-monitoramento-alvara.vercel.app](https://demo-monitoramento-alvara.vercel.app/)**
