@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   useMockData: false,
-  apiUrl: 'https://alvara-monitor-api.onrender.com/api',
+  apiUrl: 'https://api.producao.com/api',
   version: 'production'
 };
