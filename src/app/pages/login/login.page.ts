@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthService} from "../../core/auth/auth.service";
 import {Button} from "primeng/button";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginPage {
   senha: string = '';
   erroLogin: string = '';
   isLoading = false;
+  isProd = !environment.useMockData;
 
   private router = inject(Router);
   private authService = inject(AuthService);
