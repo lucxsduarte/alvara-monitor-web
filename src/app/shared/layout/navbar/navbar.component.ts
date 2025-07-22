@@ -63,9 +63,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.adminMenuItems = [
       {
-        label: 'Gerenciar Usuários',
+        label: 'Usuários',
         icon: PrimeIcons.USERS,
         routerLink: '/admin/usuarios'
+      },
+      {
+        label: 'Notificações',
+        icon: PrimeIcons.ENVELOPE,
+        routerLink: '/admin/notificacoes'
       }
     ];
   }

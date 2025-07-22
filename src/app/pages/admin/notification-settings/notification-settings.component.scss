@@ -1,0 +1,75 @@
+.dashboard-container {
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card-header h2 {
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #333;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 2rem;
+
+  label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.75rem;
+    color: #495057;
+  }
+}
+
+.items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.p-tag-clickable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #dee2e6;
+  margin: 1.5rem 0;
+}
+
+.config-atual {
+  strong {
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  p {
+    color: #6c757d;
+  }
+}

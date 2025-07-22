@@ -7,6 +7,7 @@ import {LoginPage} from "./pages/login/login.page";
 import {UserManagementPage} from "./pages/admin/user-management/user-management.page";
 import {roleGuard} from "./core/auth/role.guard";
 import {loginGuard} from "./core/auth/login.guard";
+import {NotificationSettingsComponent} from "./pages/admin/notification-settings/notification-settings.component";
 
 export const routes: Routes = [
   {
@@ -40,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'usuarios',
         component: UserManagementPage
+      },
+      {
+        path: 'notificacoes',
+        component: NotificationSettingsComponent
       },
     ]
   },

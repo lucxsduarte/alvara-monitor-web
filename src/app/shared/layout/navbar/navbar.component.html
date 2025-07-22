@@ -28,7 +28,8 @@
   <ul class="mobile-menu">
     <li><a routerLink="/empresas" (click)="sidebarVisible = false">Ver Empresas</a></li>
     <li><a routerLink="/empresas/cadastrar" (click)="sidebarVisible = false">Adicionar Empresa</a></li>
-    <li *ngIf="isAdmin"><a routerLink="/admin/usuarios" (click)="sidebarVisible = false">Gerenciar Usuários</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/admin/usuarios" (click)="sidebarVisible = false">Usuários</a></li>
+    <li *ngIf="isAdmin"><a routerLink="/admin/notificacoes" (click)="sidebarVisible = false">Notificações</a></li>
     <li *ngIf="isLoggedIn"><a (click)="logout(); sidebarVisible = false;">Logout</a></li>
   </ul>
 </p-sidebar>
