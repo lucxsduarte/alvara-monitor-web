@@ -101,7 +101,8 @@
               "buildTarget": "alvara-monitor-web:build:production"
             },
             "mock": {
-              "buildTarget": "alvara-monitor-web:build:mock"
+              "buildTarget": "alvara-monitor-web:build:mock",
+              "port": 4300
             },
             "local": {
               "buildTarget": "alvara-monitor-web:build:local"
