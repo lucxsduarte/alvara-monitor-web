@@ -8,7 +8,7 @@ import { Empresa } from '../models/empresa.model';
 describe('EmpresaService', () => {
   let service: EmpresaService;
   let httpTestingController: HttpTestingController;
-  const apiUrl = `${environment.apiUrl}/empresas`;
+  const apiUrl = `${environment.apiUrl}/companies`;
 
   beforeEach(() => {
     environment.useMockData = false;
@@ -30,7 +30,7 @@ describe('EmpresaService', () => {
   });
 
   describe('buscarEmpresas', () => {
-    it('deve chamar GET /empresas sem parâmetros quando nenhum filtro é fornecido', () => {
+    it('deve chamar GET /companies sem parâmetros quando nenhum filtro é fornecido', () => {
       service.buscarEmpresas().subscribe();
 
       const req = httpTestingController.expectOne(apiUrl);
@@ -39,7 +39,7 @@ describe('EmpresaService', () => {
       req.flush([]);
     });
 
-    it('deve chamar GET /empresas com o parâmetro "nome"', () => {
+    it('deve chamar GET /companies com o parâmetro "nome"', () => {
       const nomeFiltro = 'Teste';
       service.buscarEmpresas(nomeFiltro).subscribe();
 
@@ -49,7 +49,7 @@ describe('EmpresaService', () => {
       req.flush([]);
     });
 
-    it('deve chamar GET /empresas com o parâmetro "status"', () => {
+    it('deve chamar GET /companies com o parâmetro "status"', () => {
       const statusFiltro = FiltroStatusEmpresa.VENCIDOS;
       service.buscarEmpresas(undefined, statusFiltro).subscribe();
 
@@ -60,7 +60,7 @@ describe('EmpresaService', () => {
     });
   });
 
-  it('deve chamar GET /empresas/{id} para buscar por id', () => {
+  it('deve chamar GET /companies/{id} para buscar por id', () => {
     const idTeste = 123;
     service.buscarEmpresaPorId(idTeste).subscribe();
 
@@ -69,7 +69,7 @@ describe('EmpresaService', () => {
     req.flush({});
   });
 
-  it('deve chamar POST /empresas com o corpo da empresa', () => {
+  it('deve chamar POST /companies com o corpo da empresa', () => {
     const novaEmpresa: Omit<Empresa, 'id'> = { nome: 'Nova Empresa', vencBombeiros: null, vencFuncionamento: null, vencPolicia: null, vencVigilancia: null };
     service.salvarEmpresa(novaEmpresa).subscribe();
 
@@ -79,7 +79,7 @@ describe('EmpresaService', () => {
     req.flush({});
   });
 
-  it('deve chamar PUT /empresas/{id} com o corpo da empresa', () => {
+  it('deve chamar PUT /companies/{id} com o corpo da empresa', () => {
     const empresaAtualizada: Empresa = { id: 1, nome: 'Empresa Atualizada', vencBombeiros: null, vencFuncionamento: null, vencPolicia: null, vencVigilancia: null };
     service.atualizarEmpresa(empresaAtualizada).subscribe();
 
@@ -89,7 +89,7 @@ describe('EmpresaService', () => {
     req.flush({});
   });
 
-  it('deve chamar DELETE /empresas/{id}', () => {
+  it('deve chamar DELETE /companies/{id}', () => {
     const idParaDeletar = 456;
     service.deletarEmpresa(idParaDeletar).subscribe();
 

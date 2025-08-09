@@ -9,7 +9,7 @@ import {ConfiguracaoNotificacaoDTO} from "../models/notification-config.dto";
 })
 export class AdminSettingsService {
   private http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/admin/notificacoes/configuracoes`;
+  private readonly apiUrl = `${environment.apiUrl}/admin/notifications/settings`;
 
   private mockSettings: ConfiguracaoNotificacaoDTO = {
     diasAlerta: [15, 30, 60],

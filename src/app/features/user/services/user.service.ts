@@ -8,7 +8,7 @@ import {CreateUserDTO, UserDTO} from '../models/user.dto';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly adminApiUrl = `${environment.apiUrl}/admin/usuarios`;
+  private readonly adminApiUrl = `${environment.apiUrl}/admin/users`;
   private http = inject(HttpClient);
 
   private mockUsers: UserDTO[] = [
