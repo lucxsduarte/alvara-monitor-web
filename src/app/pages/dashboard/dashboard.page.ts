@@ -67,7 +67,7 @@ export class DashboardPage implements OnInit {
           this.totalAlvarasVencidos = summary.totalAlvarasVencidos;
 
           const mapDtoToAlvaraVencendo = (dto: AlvaraVencendoDTO): AlvaraVencendo => ({
-            empresa: { id: dto.empresaId, nome: dto.nomeEmpresa } as Empresa,
+            empresa: { id: dto.empresaId, name: dto.nomeEmpresa } as Empresa,
             tipoAlvara: dto.tipoAlvara,
             vencimento: createDateFromYYYYMMDD(dto.dataVencimento)!
           });
@@ -104,10 +104,10 @@ export class DashboardPage implements OnInit {
 
   private extrairAlvarasDeEmpresa(empresa: Empresa): AlvaraVencendo[] {
     const alvarasDaEmpresa: AlvaraVencendo[] = [];
-    if (empresa.vencBombeiros) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Bombeiros', vencimento: createDateFromYYYYMMDD(empresa.vencBombeiros)! }); }
-    if (empresa.vencVigilancia) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Vigilância Sanitária', vencimento: createDateFromYYYYMMDD(empresa.vencVigilancia)! }); }
-    if (empresa.vencPolicia) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Polícia Civil', vencimento: createDateFromYYYYMMDD(empresa.vencPolicia)! }); }
-    if (empresa.vencFuncionamento) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Funcionamento', vencimento: createDateFromYYYYMMDD(empresa.vencFuncionamento)! }); }
+    if (empresa.expLicenseFiredept) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Bombeiros', vencimento: createDateFromYYYYMMDD(empresa.expLicenseFiredept)! }); }
+    if (empresa.expLicenseSurveillance) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Vigilância Sanitária', vencimento: createDateFromYYYYMMDD(empresa.expLicenseSurveillance)! }); }
+    if (empresa.expLicensePolice) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Polícia Civil', vencimento: createDateFromYYYYMMDD(empresa.expLicensePolice)! }); }
+    if (empresa.expLicenseOperating) { alvarasDaEmpresa.push({ empresa, tipoAlvara: 'Funcionamento', vencimento: createDateFromYYYYMMDD(empresa.expLicenseOperating)! }); }
     return alvarasDaEmpresa;
   }
 

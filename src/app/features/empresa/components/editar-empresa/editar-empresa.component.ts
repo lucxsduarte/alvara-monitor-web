@@ -39,11 +39,11 @@ export class EditarEmpresaComponent implements OnInit {
 
   ngOnInit(): void {
     this.empresaForm = this.fb.group({
-      nome: [this.empresa?.nome ?? '', Validators.required],
-      vencBombeiros: [createDateFromYYYYMMDD(this.empresa?.vencBombeiros)],
-      vencFuncionamento: [createDateFromYYYYMMDD(this.empresa?.vencFuncionamento)],
-      vencPolicia: [createDateFromYYYYMMDD(this.empresa?.vencPolicia)],
-      vencVigilancia: [createDateFromYYYYMMDD(this.empresa?.vencVigilancia)],
+      nome: [this.empresa?.name ?? '', Validators.required],
+      vencBombeiros: [createDateFromYYYYMMDD(this.empresa?.expLicenseFiredept)],
+      vencFuncionamento: [createDateFromYYYYMMDD(this.empresa?.expLicenseOperating)],
+      vencPolicia: [createDateFromYYYYMMDD(this.empresa?.expLicensePolice)],
+      vencVigilancia: [createDateFromYYYYMMDD(this.empresa?.expLicenseSurveillance)],
     }, {
       validators: [requireAtLeastOneDateValidator()]
     });
@@ -64,10 +64,10 @@ export class EditarEmpresaComponent implements OnInit {
     const dadosEditados: Empresa = {
       ...this.empresa,
       ...formValues,
-      vencBombeiros: formatDate(formValues.vencBombeiros),
-      vencFuncionamento: formatDate(formValues.vencFuncionamento),
-      vencPolicia: formatDate(formValues.vencPolicia),
-      vencVigilancia: formatDate(formValues.vencVigilancia),
+      expLicenseFiredept: formatDate(formValues.vencBombeiros),
+      expLicenseOperating: formatDate(formValues.vencFuncionamento),
+      expLicensePolice: formatDate(formValues.vencPolicia),
+      expLicenseSurveillance: formatDate(formValues.vencVigilancia),
     };
 
     this.ref.close(dadosEditados);

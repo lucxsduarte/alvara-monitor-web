@@ -49,11 +49,11 @@
           </ng-template>
           <ng-template pTemplate="body" let-empresa>
             <tr>
-              <td style="width: 30%;">{{ empresa.nome }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.vencBombeiros | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.vencFuncionamento | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.vencPolicia | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.vencVigilancia | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 30%;">{{ empresa.name }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.expLicenseFiredept | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.expLicenseSurveillance | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.expLicensePolice | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ empresa.expLicenseOperating | date:'dd/MM/yyyy' }}</td>
               <td style="text-align: center; width: 6%;">
                 <button
                   pButton

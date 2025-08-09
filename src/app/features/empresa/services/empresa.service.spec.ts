@@ -70,7 +70,7 @@ describe('EmpresaService', () => {
   });
 
   it('deve chamar POST /companies com o corpo da empresa', () => {
-    const novaEmpresa: Omit<Empresa, 'id'> = { nome: 'Nova Empresa', vencBombeiros: null, vencFuncionamento: null, vencPolicia: null, vencVigilancia: null };
+    const novaEmpresa: Omit<Empresa, 'id'> = { name: 'Nova Empresa', expLicenseFiredept: null, expLicenseOperating: null, expLicensePolice: null, expLicenseSurveillance: null };
     service.salvarEmpresa(novaEmpresa).subscribe();
 
     const req = httpTestingController.expectOne(apiUrl);
@@ -80,7 +80,7 @@ describe('EmpresaService', () => {
   });
 
   it('deve chamar PUT /companies/{id} com o corpo da empresa', () => {
-    const empresaAtualizada: Empresa = { id: 1, nome: 'Empresa Atualizada', vencBombeiros: null, vencFuncionamento: null, vencPolicia: null, vencVigilancia: null };
+    const empresaAtualizada: Empresa = { id: 1, name: 'Empresa Atualizada', expLicenseFiredept: null, expLicenseOperating: null, expLicensePolice: null, expLicenseSurveillance: null };
     service.atualizarEmpresa(empresaAtualizada).subscribe();
 
     const req = httpTestingController.expectOne(`${apiUrl}/${empresaAtualizada.id}`);

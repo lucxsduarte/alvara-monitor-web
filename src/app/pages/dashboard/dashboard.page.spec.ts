@@ -51,19 +51,19 @@ describe('DashboardPage', () => {
       const mockEmpresas: Empresa[] = [
         {
           id: 1,
-          nome: 'Vencida',
-          vencBombeiros: '2020-01-01',
-          vencFuncionamento: null,
-          vencPolicia: null,
-          vencVigilancia: null
+          name: 'Vencida',
+          expLicenseFiredept: '2020-01-01',
+          expLicenseOperating: null,
+          expLicensePolice: null,
+          expLicenseSurveillance: null
         },
         {
           id: 2,
-          nome: 'A Vencer',
-          vencBombeiros: new Date().toISOString().split('T')[0],
-          vencFuncionamento: null,
-          vencPolicia: null,
-          vencVigilancia: null
+          name: 'A Vencer',
+          expLicenseFiredept: new Date().toISOString().split('T')[0],
+          expLicenseOperating: null,
+          expLicensePolice: null,
+          expLicenseSurveillance: null
         },
       ];
       empresaServiceSpy.buscarEmpresas.and.returnValue(of(mockEmpresas));
