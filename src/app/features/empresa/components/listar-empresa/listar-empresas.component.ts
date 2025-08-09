@@ -96,7 +96,7 @@ export class ListarEmpresasComponent implements OnInit, OnDestroy {
       combinedStream$.subscribe({
         next: (empresas) => {
           this.empresas = empresas.sort((a, b) =>
-            a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' })
+            a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' })
           );
         },
         error: (err) => {
@@ -118,7 +118,7 @@ export class ListarEmpresasComponent implements OnInit, OnDestroy {
   editar(empresa: Empresa): void {
     this.ref = this.dialogService.open(EditarEmpresaComponent, {
       data: { empresa },
-      header: `Editar Empresa: ${empresa.nome}`,
+      header: `Editar Empresa: ${empresa.name}`,
       width: '60%',
       modal: true
     });
@@ -140,7 +140,7 @@ export class ListarEmpresasComponent implements OnInit, OnDestroy {
 
   excluir(empresa: Empresa): void {
     this.confirmationService.confirm({
-      message: `Tem certeza que deseja excluir a empresa "${empresa.nome}"?`,
+      message: `Tem certeza que deseja excluir a empresa "${empresa.name}"?`,
       header: 'Confirmação de Exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

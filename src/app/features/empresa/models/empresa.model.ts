@@ -1,8 +1,8 @@
 export interface Empresa {
   id: number;
-  nome: string;
-  vencBombeiros: string | null;
-  vencVigilancia: string | null;
-  vencPolicia: string | null;
-  vencFuncionamento: string | null;
+  name: string;
+  expLicenseFiredept: string | null;
+  expLicenseSurveillance: string | null;
+  expLicensePolice: string | null;
+  expLicenseOperating: string | null;
 }

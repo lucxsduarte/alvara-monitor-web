@@ -19,7 +19,7 @@
       <div class="card-body">
         <div *ngFor="let empresa of alvarasVencendo30 | slice: 0:3" class="alvara-item">
           <div class="alvara-info">
-            <span><strong>Empresa:</strong> {{ empresa.empresa.nome }}</span>
+            <span><strong>Empresa:</strong> {{ empresa.empresa.name }}</span>
             <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
             <div class="vencimento-info">
               <strong>Vencimento:</strong>
@@ -44,7 +44,7 @@
       <div class="card-body">
         <div *ngFor="let empresa of proximosVencimentos" class="alvara-item">
           <div class="alvara-info">
-            <span><strong>Empresa:</strong> {{ empresa.empresa.nome }}</span>
+            <span><strong>Empresa:</strong> {{ empresa.empresa.name }}</span>
             <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
             <div class="vencimento-info">
               <div class="vencimento-label">
