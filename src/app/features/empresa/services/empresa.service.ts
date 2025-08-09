@@ -10,7 +10,7 @@ import {FiltroStatusEmpresa} from "../models/enums/FiltroStatusEmpresa";
   providedIn: 'root'
 })
 export class EmpresaService {
-  private readonly apiUrl = `${environment.apiUrl}/empresas`;
+  private readonly apiUrl = `${environment.apiUrl}/companies`;
   private http = inject(HttpClient);
 
   private empresasBaseMock: Partial<Empresa>[] = [
