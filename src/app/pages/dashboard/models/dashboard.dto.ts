@@ -1,13 +1,13 @@
-export interface AlvaraVencendoDTO {
-  empresaId: number;
-  nomeEmpresa: string;
-  tipoAlvara: string;
-  dataVencimento: string;
+export interface ExpiringLicenseDTO {
+  companyId: number;
+  companyName: string;
+  licenseType: string;
+  expirationDate: string;
 }
 
 export interface DashboardSummaryDTO {
-  totalEmpresas: number;
-  totalAlvarasVencidos: number;
-  alvarasVencendo30Dias: AlvaraVencendoDTO[];
-  proximosVencimentos: AlvaraVencendoDTO[];
+  totalCompanies: number;
+  totalExpiredLicenses: number;
+  licensesExpiringIn30Days: ExpiringLicenseDTO[];
+  upcomingExpirations: ExpiringLicenseDTO[];
 }

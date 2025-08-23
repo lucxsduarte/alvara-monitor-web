@@ -5,14 +5,14 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
-import { Empresa } from '../../models/empresa.model';
+import { Company } from '../../models/company.model';
 import {MessageService} from "primeng/api";
 import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
 import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
 
 
 @Component({
-  selector: 'app-editar-empresa',
+  selector: 'app-edit-company',
   standalone: true,
   imports: [
     CommonModule,
@@ -21,12 +21,12 @@ import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
     InputTextModule,
     CalendarModule
   ],
-  templateUrl: './editar-empresa.component.html',
-  styleUrl: './editar-empresa.component.scss'
+  templateUrl: './edit-company.component.html',
+  styleUrl: './edit-company.component.scss'
 })
-export class EditarEmpresaComponent implements OnInit {
-  empresaForm!: FormGroup;
-  empresa: Empresa;
+export class EditCompanyComponent implements OnInit {
+  companyForm!: FormGroup;
+  company: Company;
 
   private fb = inject(FormBuilder);
   private ref = inject(DynamicDialogRef);
@@ -34,35 +34,35 @@ export class EditarEmpresaComponent implements OnInit {
   private messageService = inject(MessageService);
 
   constructor() {
-    this.empresa = this.config.data.empresa;
+    this.company = this.config.data.company;
   }
 
   ngOnInit(): void {
-    this.empresaForm = this.fb.group({
-      nome: [this.empresa?.name ?? '', Validators.required],
-      vencBombeiros: [createDateFromYYYYMMDD(this.empresa?.expLicenseFiredept)],
-      vencFuncionamento: [createDateFromYYYYMMDD(this.empresa?.expLicenseOperating)],
-      vencPolicia: [createDateFromYYYYMMDD(this.empresa?.expLicensePolice)],
-      vencVigilancia: [createDateFromYYYYMMDD(this.empresa?.expLicenseSurveillance)],
+    this.companyForm = this.fb.group({
+      name: [this.company?.name ?? '', Validators.required],
+      expLicenseFiredept: [createDateFromYYYYMMDD(this.company?.expLicenseFiredept)],
+      expLicenseOperating: [createDateFromYYYYMMDD(this.company?.expLicenseOperating)],
+      expLicensePolice: [createDateFromYYYYMMDD(this.company?.expLicensePolice)],
+      expLicenseSurveillance: [createDateFromYYYYMMDD(this.company?.expLicenseSurveillance)],
     }, {
       validators: [requireAtLeastOneDateValidator()]
     });
   }
 
-  salvar(): void {
-    if (this.empresaForm.invalid) {
-      const detail = this.empresaForm.hasError('requireAtLeastOneDate')
+  save(): void {
+    if (this.companyForm.invalid) {
+      const detail = this.companyForm.hasError('requireAtLeastOneDate')
         ? 'Preencha pelo menos uma data de alvará.'
         : 'Preencha o nome da empresa corretamente.';
       this.messageService.add({ severity: 'error', summary: 'Erro de validação', detail });
       return;
     }
 
-    const formValues = this.empresaForm.value;
+    const formValues = this.companyForm.value;
     const formatDate = (date: Date | null): string | null => date ? date.toISOString().split('T')[0] : null;
 
-    const dadosEditados: Empresa = {
-      ...this.empresa,
+    const editedData: Company = {
+      ...this.company,
       ...formValues,
       expLicenseFiredept: formatDate(formValues.vencBombeiros),
       expLicenseOperating: formatDate(formValues.vencFuncionamento),
@@ -70,10 +70,10 @@ export class EditarEmpresaComponent implements OnInit {
       expLicenseSurveillance: formatDate(formValues.vencVigilancia),
     };
 
-    this.ref.close(dadosEditados);
+    this.ref.close(editedData);
   }
 
-  cancelar(): void {
+  cancel(): void {
     this.ref.close();
   }
 }

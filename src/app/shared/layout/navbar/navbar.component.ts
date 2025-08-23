@@ -24,7 +24,7 @@ import { SidebarModule } from 'primeng/sidebar';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
-  empresaMenuItems: MenuItem[] = [];
+  companyMenuItems: MenuItem[] = [];
   adminMenuItems: MenuItem[] = [];
 
   isLoggedIn = false;
@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
 
   ngOnInit() {
-    this.setupMenus();
+    this.setupMenuItems();
 
     this.authSubscription = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
@@ -47,8 +47,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.authSubscription.unsubscribe();
   }
 
-  setupMenus() {
-    this.empresaMenuItems = [
+  setupMenuItems() {
+    this.companyMenuItems = [
       {
         label: 'Ver todas',
         icon: PrimeIcons.EYE,

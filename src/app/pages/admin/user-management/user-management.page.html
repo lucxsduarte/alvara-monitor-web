@@ -77,7 +77,7 @@
       <h2>Usuários cadastrados</h2>
     </div>
     <div class="card-body">
-      <div *ngIf="users.length > 0; else semUsuarios">
+      <div *ngIf="users.length > 0; else noUsersFound">
         <p-table
           [value]="users"
           [rows]="5"
@@ -111,7 +111,7 @@
         </p-table>
       </div>
 
-      <ng-template #semUsuarios>
+      <ng-template #noUsersFound>
         <p class="no-alvara">Nenhum usuário encontrado.</p>
       </ng-template>
     </div>
