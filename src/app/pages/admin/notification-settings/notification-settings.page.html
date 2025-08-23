@@ -1,0 +1,69 @@
+<p-toast></p-toast>
+<section class="dashboard-container">
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Configurações de notificação</h2>
+    </div>
+    <div class="card-body" [formGroup]="settingsForm">
+
+      <div class="input-group">
+        <label for="day">Dias de antecedência para alerta</label>
+        <div class="p-inputgroup">
+          <input id="day" type="text" pInputText formControlName="day" placeholder="Ex: 15" (keyup.enter)="addDay()">
+          <button pButton type="button" icon="pi pi-plus" styleClass="p-button-success" (click)="addDay()" [disabled]="settingsForm.get('day')?.invalid"></button>
+        </div>
+        <small *ngIf="editingAlertDays.length > 0" class="mt-2">Dias adicionados:</small>
+        <div class="items-list">
+          <p-tag *ngFor="let day of editingAlertDays" [value]="day + ' dias'" icon="pi pi-times" (click)="removeDay(day)" styleClass="p-tag-clickable"></p-tag>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="email">E-mails para receber alertas</label>
+        <div class="p-inputgroup">
+          <input id="email" type="email" pInputText formControlName="email" placeholder="Ex: email@exemplo.com" (keyup.enter)="addEmail()">
+          <button pButton type="button" icon="pi pi-plus" styleClass="p-button-success" (click)="addEmail()" [disabled]="settingsForm.get('email')?.invalid"></button>
+        </div>
+        <small *ngIf="editingRecipientEmails.length > 0" class="mt-2">E-mails adicionados:</small>
+        <div class="items-list">
+          <p-tag *ngFor="let email of editingRecipientEmails" [value]="email" icon="pi pi-times" (click)="removeEmail(email)" styleClass="p-tag-clickable"></p-tag>
+        </div>
+      </div>
+
+      <p-button
+        label="Salvar"
+        icon="pi pi-check"
+        (click)="saveSettings()"
+        [loading]="isLoading"
+        [disabled]="isLoading"
+        styleClass="p-button-primary mt-4">
+      </p-button>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Configuração atual salva</h2>
+    </div>
+    <div class="card-body" *ngIf="savedSettings">
+      <div class="config-atual">
+        <strong>Dias de alerta salvos:</strong>
+        <div class="items-list" *ngIf="savedSettings.alertDays.length > 0; else noDaysConfigured">
+          <p-tag *ngFor="let day of savedSettings.alertDays" [value]="day + ' dias'"></p-tag>
+        </div>
+        <ng-template #noDaysConfigured><p>Nenhum dia configurado.</p></ng-template>
+      </div>
+      <hr>
+      <div class="config-atual">
+        <strong>E-mails de destino salvos:</strong>
+        <div class="items-list" *ngIf="savedSettings.recipientEmails.length > 0; else semEmails">
+          <p-tag *ngFor="let email of savedSettings.recipientEmails" [value]="email"></p-tag>
+        </div>
+        <ng-template #semEmails><p>Nenhum e-mail configurado.</p></ng-template>
+      </div>
+    </div>
+  </div>
+
+</section>

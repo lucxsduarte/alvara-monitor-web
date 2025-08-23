@@ -6,7 +6,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {ButtonModule} from 'primeng/button';
 import {FloatLabelModule} from 'primeng/floatlabel';
-import {UserDTO} from "../../models/user.dto";
+import {UserResponseDTO} from "../../models/userResponseDTO";
 
 @Component({
   selector: 'app-edit-user',
@@ -28,7 +28,7 @@ export class EditUserComponent implements OnInit {
   private config = inject(DynamicDialogConfig);
 
   userForm!: FormGroup;
-  user: UserDTO = this.config.data.user;
+  user: UserResponseDTO = this.config.data.user;
 
   roles: any[];
 

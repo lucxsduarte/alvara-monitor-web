@@ -6,8 +6,8 @@
         <h2>Empresas Monitoradas</h2>
       </div>
       <div class="card-body">
-        <p class="card-number">{{ totalEmpresas }}</p>
-        <button class="btn-alvaras-vencidos" (click)="irParaGerenciamentoAlvaras()">Alvarás Vencidos: {{ totalAlvarasVencidos }}</button>
+        <p class="card-number">{{ totalCompanies }}</p>
+        <button class="btn-alvaras-vencidos" (click)="goToExpiredLicenses()">Alvarás Vencidos: {{ totalExpiredLicenses }}</button>
       </div>
     </div>
 
@@ -17,17 +17,17 @@
         <h2>Alvarás Vencendo</h2>
       </div>
       <div class="card-body">
-        <div *ngFor="let empresa of alvarasVencendo30 | slice: 0:3" class="alvara-item">
+        <div *ngFor="let item of licensesExpiringIn30Days | slice: 0:3" class="alvara-item">
           <div class="alvara-info">
-            <span><strong>Empresa:</strong> {{ empresa.empresa.name }}</span>
-            <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
+            <span><strong>Empresa:</strong> {{ item.company.name }}</span>
+            <span><strong>Tipo de Alvará:</strong> {{ item.licenseType || 'N/A' }}</span>
             <div class="vencimento-info">
               <strong>Vencimento:</strong>
               <div class="vencimento-dados">
-                <span>{{ empresa.vencimento | date:'dd/MM/yyyy' }}</span>
+                <span>{{ item.dueDate | date:'dd/MM/yyyy' }}</span>
                 <p-tag
-                  [severity]="definirCorDias(calcularDiasParaVencimento(empresa.vencimento))"
-                  [value]="defineTextoVencimento(empresa.vencimento)">
+                  [severity]="getDaysBadgeColor(calculateDaysUntilExpiration(item.dueDate))"
+                  [value]="getExpirationText(item.dueDate)">
                 </p-tag>
               </div>
             </div>
@@ -42,19 +42,19 @@
         <h2>Próximos Vencimentos</h2>
       </div>
       <div class="card-body">
-        <div *ngFor="let empresa of proximosVencimentos" class="alvara-item">
+        <div *ngFor="let item of upcomingExpirations" class="alvara-item">
           <div class="alvara-info">
-            <span><strong>Empresa:</strong> {{ empresa.empresa.name }}</span>
-            <span><strong>Tipo de Alvará:</strong> {{ empresa.tipoAlvara || 'N/A' }}</span>
+            <span><strong>Empresa:</strong> {{ item.company.name }}</span>
+            <span><strong>Tipo de Alvará:</strong> {{ item.licenseType || 'N/A' }}</span>
             <div class="vencimento-info">
               <div class="vencimento-label">
                 <strong>Vencimento:</strong>
               </div>
               <div class="vencimento-dados">
-                <span>{{ empresa.vencimento | date:'dd/MM/yyyy' }}</span>
+                <span>{{ item.dueDate | date:'dd/MM/yyyy' }}</span>
                 <p-tag
-                  [severity]="definirCorDias(calcularDiasParaVencimento(empresa.vencimento))"
-                  [value]="defineTextoVencimento(empresa.vencimento)">
+                  [severity]="getDaysBadgeColor(calculateDaysUntilExpiration(item.dueDate))"
+                  [value]="getExpirationText(item.dueDate)">
                 </p-tag>
               </div>
             </div>
@@ -71,9 +71,9 @@
         <h2>Alvarás vencendo em 30 dias</h2>
       </div>
       <div class="card-body">
-        <div *ngIf="alvarasVencendo30.length > 0; else semVencimentos30">
+        <div *ngIf="licensesExpiringIn30Days.length > 0; else noExpirationsIn30Days">
           <p-table
-            [value]="alvarasVencendo30"
+            [value]="licensesExpiringIn30Days"
             [rows]="5"
             [tableStyle]="{ 'min-width': '50rem' }"
             [resizableColumns]="true"
@@ -89,21 +89,21 @@
                 <th style="text-align: center">Ações</th>
               </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-empresa>
+            <ng-template pTemplate="body" let-item>
               <tr>
-                <td style="width: 60%;">{{ empresa.empresa.nome }}</td>
-                <td style="width: 20%;">{{ empresa.tipoAlvara || 'N/A' }}</td>
-                <td style="width: 8%; text-align: center;">{{ empresa.vencimento | date:'dd/MM/yyyy' }}</td>
-                <td style="width: 7%; text-align: center;">{{ defineTextoVencimento(empresa.vencimento) }}</td>
+                <td style="width: 60%;">{{ item.company.name }}</td>
+                <td style="width: 20%;">{{ item.licenseType || 'N/A' }}</td>
+                <td style="width: 8%; text-align: center;">{{ item.dueDate | date:'dd/MM/yyyy' }}</td>
+                <td style="width: 7%; text-align: center;">{{ getExpirationText(item.dueDate) }}</td>
                 <td style="width: 5%; text-align: center;">
-                  <button pButton type="button" icon="pi pi-angle-right" class="p-button-text" pTooltip="Visualizar" style="color: #2c3e50" (click)="irParaEmpresa(empresa.empresa.id)"></button>
+                  <button pButton type="button" icon="pi pi-angle-right" class="p-button-text" pTooltip="Visualizar" style="color: #2c3e50" (click)="goToCompany(item.company.id)"></button>
                 </td>
               </tr>
             </ng-template>
           </p-table>
         </div>
 
-        <ng-template #semVencimentos30>
+        <ng-template #noExpirationsIn30Days>
           <p class="no-alvara">Nenhum alvará vencendo dentro de 30 dias</p>
         </ng-template>
       </div>

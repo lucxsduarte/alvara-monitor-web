@@ -53,7 +53,6 @@ O **Monitoramento de Alvarás** foi idealizado como uma solução moderna para c
 - **Design Responsivo:** Experiência de uso consistente em desktops, tablets e celulares.
 - **Componentização e Reatividade:** Uso de componentes `standalone`, `DynamicDialog` do PrimeNG para modais e RxJS para gerenciar fluxos de dados de forma reativa e eficiente.
 - **Arquitetura Flexível (Mock/Real):** Capacidade de rodar com dados mockados (para portfólio) ou conectado a uma API real, controlado por ambientes do Angular.
-- **Testes de Unidade e Componente:** Cobertura de testes com Karma e Jasmine para garantir a qualidade e a confiabilidade dos serviços e componentes principais.
 
 ---
 

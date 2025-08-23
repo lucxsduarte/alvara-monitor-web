@@ -3,8 +3,8 @@ import {ButtonDirective} from "primeng/button";
 import {DatePipe, NgIf} from "@angular/common";
 import {Table, TableModule} from "primeng/table";
 import {TooltipModule} from "primeng/tooltip";
-import {Empresa} from "../../models/empresa.model";
-import {EmpresaService} from "../../services/empresa.service";
+import {Company} from "../../models/company.model";
+import {CompanyService} from "../../services/company.service";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {IconFieldModule} from "primeng/iconfield";
@@ -13,7 +13,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogService, DynamicDialogModule, DynamicDialogRef} from "primeng/dynamicdialog";
-import {EditarEmpresaComponent} from "../editar-empresa/editar-empresa.component";
+import {EditCompanyComponent} from "../edit-company/edit-company.component";
 import {ActivatedRoute} from "@angular/router";
 import {createDateFromYYYYMMDD} from "../../../../utils/date.utils";
 import {
@@ -26,11 +26,11 @@ import {
   Subscription,
   switchMap
 } from "rxjs";
-import {FiltroStatusEmpresa} from "../../models/enums/FiltroStatusEmpresa";
+import {CompanyStatusFilter} from "../../models/enums/CompanyStatusFilter";
 
 
 @Component({
-  selector: 'app-listar-empresa',
+  selector: 'app-list-companies',
   standalone: true,
   imports: [
     ButtonDirective,
@@ -46,62 +46,64 @@ import {FiltroStatusEmpresa} from "../../models/enums/FiltroStatusEmpresa";
     ConfirmDialogModule,
     DynamicDialogModule,
   ],
-  templateUrl: './listar-empresas.component.html',
-  styleUrl: './listar-empresas.component.scss',
+  templateUrl: './list-companies.component.html',
+  styleUrl: './list-companies.component.scss',
   providers: [DialogService, ConfirmationService],
 })
-export class ListarEmpresasComponent implements OnInit, OnDestroy {
-  empresas: Empresa[] = [];
-  filtroGlobal: string = '';
+export class ListCompaniesComponent implements OnInit, OnDestroy {
+  companies: Company[] = [];
+  globalFilter: string = '';
 
-  private empresaService = inject(EmpresaService);
+  private companyService = inject(CompanyService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
   private dialogService = inject(DialogService);
   private route = inject(ActivatedRoute);
 
-  private filtroGlobalSubject = new Subject<string>();
+  private globalFilterSubject  = new Subject<string>();
   private refreshSubject = new Subject<void>();
   private subscriptions = new Subscription();
   ref!: DynamicDialogRef;
 
-  @ViewChild('tabelaEmpresas') tabelaEmpresas!: Table;
+  @ViewChild('companiesTable') companiesTable!: Table;
 
   ngOnInit(): void {
     const combinedStream$ = combineLatest([
       this.route.queryParams,
-      this.filtroGlobalSubject.pipe(
+      this.globalFilterSubject .pipe(
         debounceTime(400),
         distinctUntilChanged(),
         startWith('')
       ),
       this.refreshSubject.pipe(startWith(null))
     ]).pipe(
-      switchMap(([params, nomeFiltro]) => {
+      switchMap(([params, nameFilter]) => {
         const id = params['id'];
-        const filtro = params['filtro'];
+        const filter = params['filter'];
 
         if (id) {
-          return this.empresaService.buscarEmpresaPorId(Number(id)).pipe(
-            map(empresa => empresa ? [empresa] : [])
+          return this.companyService.getCompanyById(Number(id)).pipe(
+            map(company => company ? [company] : [])
           );
         }
 
-        const statusFiltro = filtro === 'vencidos' ? FiltroStatusEmpresa.VENCIDOS : undefined;
-        return this.empresaService.buscarEmpresas(nomeFiltro, statusFiltro);
+        const statusFilter = filter === 'expired' ? CompanyStatusFilter.EXPIRED : undefined;
+        return this.companyService.getCompanies(nameFilter, statusFilter);
       })
     );
 
     this.subscriptions.add(
       combinedStream$.subscribe({
-        next: (empresas) => {
-          this.empresas = empresas.sort((a, b) =>
-            a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' })
-          );
+        next: (companies) => {
+          this.companies = companies.sort((a, b) => {
+            const nameA = a.name || '';
+            const nameB = b.name || '';
+            return nameA.localeCompare(nameB, 'pt-BR', { sensitivity: 'base' });
+          });
         },
         error: (err) => {
           console.error("Erro ao carregar empresas:", err);
-          this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível carregar as empresas.' });
+          this.messageService .add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível carregar as empresas.' });
         }
       })
     );
@@ -111,45 +113,45 @@ export class ListarEmpresasComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  onFiltroGlobalChange(): void {
-    this.filtroGlobalSubject.next(this.filtroGlobal);
+  onGlobalFilterChange(): void {
+    this.globalFilterSubject .next(this.globalFilter);
   }
 
-  editar(empresa: Empresa): void {
-    this.ref = this.dialogService.open(EditarEmpresaComponent, {
-      data: { empresa },
-      header: `Editar Empresa: ${empresa.name}`,
+  editCompany(company: Company): void {
+    this.ref = this.dialogService.open(EditCompanyComponent, {
+      data: { company },
+      header: `Editar Empresa: ${company.name}`,
       width: '60%',
       modal: true
     });
 
     this.subscriptions.add(
-      this.ref.onClose.subscribe((dadosEditados: Empresa) => {
-        if (dadosEditados) {
-          this.empresaService.atualizarEmpresa(dadosEditados).subscribe({
+      this.ref.onClose.subscribe((editedData: Company) => {
+        if (editedData) {
+          this.companyService .updateCompany(editedData).subscribe({
             next: () => {
-              this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa atualizada com sucesso!' });
+              this.messageService .add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa atualizada com sucesso!' });
               this.refreshSubject.next();
             },
-            error: () => this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar empresa.' })
+            error: () => this.messageService .add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar empresa.' })
           });
         }
       })
     );
   }
 
-  excluir(empresa: Empresa): void {
+  deleteCompany(company: Company): void {
     this.confirmationService.confirm({
-      message: `Tem certeza que deseja excluir a empresa "${empresa.name}"?`,
-      header: 'Confirmação de Exclusão',
+      message: `Tem certeza que deseja excluir a empresa "${company.name}"?`,
+      header: 'Confirmação de exclusão',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.empresaService.deletarEmpresa(empresa.id).subscribe({
+        this.companyService .deleteCompany(company.id).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa excluída com sucesso!' });
+            this.messageService .add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa excluída com sucesso!' });
             this.refreshSubject.next();
           },
-          error: () => this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir empresa.' })
+          error: () => this.messageService .add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir empresa.' })
         });
       }
     });

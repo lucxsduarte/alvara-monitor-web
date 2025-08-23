@@ -8,13 +8,13 @@
     </div>
 
     <div class="card-body">
-      <div *ngIf="empresas.length > 0; else semEmpresas">
+      <div *ngIf="companies.length > 0; else noCompaniesTemplate">
         <p-table
-          #tabelaEmpresas
-          [value]="empresas"
+          #companiesTable
+          [value]="companies"
           [tableStyle]="{ 'min-width': '50rem' }"
           [rows]="10"
-          [globalFilterFields]="['nome']"
+          [globalFilterFields]="['name']"
           [resizableColumns]="true"
           [scrollable]="true"
           scrollHeight="600px"
@@ -30,8 +30,8 @@
                   pInputText
                   size="50"
                   placeholder="Procurar por nome"
-                  [(ngModel)]="filtroGlobal"
-                  (input)="onFiltroGlobalChange()"
+                  [(ngModel)]="globalFilter"
+                  (input)="onGlobalFilterChange()"
                 />
               </p-iconField>
             </div>
@@ -47,13 +47,13 @@
               <th style="text-align: center;">Ações</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-empresa>
+          <ng-template pTemplate="body" let-company>
             <tr>
-              <td style="width: 30%;">{{ empresa.name }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.expLicenseFiredept | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.expLicenseSurveillance | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.expLicensePolice | date:'dd/MM/yyyy' }}</td>
-              <td style="width: 10%; text-align: center">{{ empresa.expLicenseOperating | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 30%;">{{ company.name }}</td>
+              <td style="width: 10%; text-align: center">{{ company.expLicenseFiredept | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ company.expLicenseSurveillance | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ company.expLicensePolice | date:'dd/MM/yyyy' }}</td>
+              <td style="width: 10%; text-align: center">{{ company.expLicenseOperating | date:'dd/MM/yyyy' }}</td>
               <td style="text-align: center; width: 6%;">
                 <button
                   pButton
@@ -61,7 +61,7 @@
                   class="p-button-text"
                   style="color: #2c3e50"
                   pTooltip="Editar"
-                  (click)="editar(empresa)"
+                  (click)="editCompany(company)"
                 ></button>
                 <button
                   pButton
@@ -69,7 +69,7 @@
                   class="p-button-text"
                   style="color: #e74c3c"
                   pTooltip="Excluir"
-                  (click)="excluir(empresa)"
+                  (click)="deleteCompany(company)"
                 ></button>
               </td>
             </tr>
@@ -77,7 +77,7 @@
         </p-table>
       </div>
 
-      <ng-template #semEmpresas>
+      <ng-template #noCompaniesTemplate>
         <p class="no-alvara">Nenhuma empresa encontrada</p>
       </ng-template>
     </div>
