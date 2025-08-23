@@ -8,17 +8,17 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from "primeng/table";
 import { TagModule } from "primeng/tag";
 import {AdminSettingsService} from "../../../features/admin-settings/services/admin-settings.service";
-import {ConfiguracaoNotificacaoDTO} from "../../../features/admin-settings/models/notification-config.dto";
+import {NotificationSettingsDTO} from "../../../features/admin-settings/models/notification-config.dto";
 
 @Component({
   selector: 'app-notification-settings',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ButtonModule, ToastModule, InputTextModule, TableModule, TagModule],
-  templateUrl: './notification-settings.component.html',
-  styleUrls: ['./notification-settings.component.scss'],
+  templateUrl: './notification-settings.page.html',
+  styleUrls: ['./notification-settings.page.scss'],
   providers: [MessageService]
 })
-export class NotificationSettingsComponent implements OnInit {
+export class NotificationSettingsPage implements OnInit {
   private fb = inject(FormBuilder);
   private adminSettingsService = inject(AdminSettingsService);
   private messageService = inject(MessageService);
@@ -26,9 +26,9 @@ export class NotificationSettingsComponent implements OnInit {
   settingsForm!: FormGroup;
   isLoading = false;
 
-  diasAlertaEditando: number[] = [];
-  emailsDestinoEditando: string[] = [];
-  configuracaoSalva: ConfiguracaoNotificacaoDTO | null = null;
+  editingAlertDays: number[] = [];
+  editingRecipientEmails: string[] = [];
+  savedSettings: NotificationSettingsDTO | null = null;
 
   ngOnInit(): void {
     this.settingsForm = this.fb.group({
@@ -43,9 +43,9 @@ export class NotificationSettingsComponent implements OnInit {
     this.isLoading = true;
     this.adminSettingsService.getNotificationSettings().subscribe({
       next: (data) => {
-        this.configuracaoSalva = data;
-        this.diasAlertaEditando = [];
-        this.emailsDestinoEditando = [];
+        this.savedSettings = data;
+        this.editingAlertDays = [];
+        this.editingRecipientEmails = [];
         this.isLoading = false;
       },
       error: () => {
@@ -55,39 +55,39 @@ export class NotificationSettingsComponent implements OnInit {
     });
   }
 
-  adicionaDia(): void {
+  addDay(): void {
     const diaControl = this.settingsForm.get('dia');
     if (diaControl?.valid && diaControl.value) {
       const dia = Number(diaControl.value);
-      if (!this.diasAlertaEditando.includes(dia)) {
-        this.diasAlertaEditando.push(dia);
-        this.diasAlertaEditando.sort((a, b) => a - b);
+      if (!this.editingAlertDays.includes(dia)) {
+        this.editingAlertDays.push(dia);
+        this.editingAlertDays.sort((a, b) => a - b);
       }
       diaControl.reset();
     }
   }
 
-  removeDia(dia: number): void {
-    this.diasAlertaEditando = this.diasAlertaEditando.filter(d => d !== dia);
+  removeDay(day: number): void {
+    this.editingAlertDays = this.editingAlertDays.filter(d => d !== day);
   }
 
-  adicionaEmail(): void {
+  addEmail(): void {
     const emailControl = this.settingsForm.get('email');
     if (emailControl?.valid && emailControl.value) {
       const email = emailControl.value.toLowerCase();
-      if (!this.emailsDestinoEditando.includes(email)) {
-        this.emailsDestinoEditando.push(email);
+      if (!this.editingRecipientEmails.includes(email)) {
+        this.editingRecipientEmails.push(email);
       }
       emailControl.reset();
     }
   }
 
   removeEmail(email: string): void {
-    this.emailsDestinoEditando = this.emailsDestinoEditando.filter(e => e !== email);
+    this.editingRecipientEmails = this.editingRecipientEmails.filter(e => e !== email);
   }
 
   saveSettings(): void {
-    if (this.diasAlertaEditando.length === 0 || this.emailsDestinoEditando.length === 0) {
+    if (this.editingAlertDays.length === 0 || this.editingRecipientEmails.length === 0) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Atenção',
@@ -97,9 +97,9 @@ export class NotificationSettingsComponent implements OnInit {
     }
 
     this.isLoading = true;
-    const configData: ConfiguracaoNotificacaoDTO = {
-      diasAlerta: this.diasAlertaEditando,
-      emailsDestino: this.emailsDestinoEditando
+    const configData: NotificationSettingsDTO = {
+      alertDays: this.editingAlertDays,
+      recipientEmails: this.editingRecipientEmails
     };
 
     this.adminSettingsService.updateNotificationSettings(configData).subscribe({

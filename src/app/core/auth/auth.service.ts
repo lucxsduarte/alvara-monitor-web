@@ -39,9 +39,9 @@ export class AuthService {
     this.loadUserFromToken();
   }
 
-  login(credentials: { login: string; senha: string }): Observable<LoginResponse | null> {
+  login(credentials: { login: string; password: string }): Observable<LoginResponse | null> {
     if (environment.useMockData) {
-      if (credentials.login === 'admin' && credentials.senha === '123') {
+      if (credentials.login === 'admin' && credentials.password === '123') {
         const mockAdminToken = this.createMockAdminToken();
         this.handleAuthentication(mockAdminToken);
         return of({token: mockAdminToken});

@@ -7,74 +7,73 @@
     </div>
 
     <div class="card-body">
-      <form [formGroup]="empresaForm" (ngSubmit)="save()">
-        <!-- Nome (obrigatório) -->
+      <form [formGroup]="companyForm" (ngSubmit)="save()">
+
         <div class="p-fluid">
           <div class="field">
             <p-floatLabel>
               <input
-                id="nome"
+                id="name"
                 type="text"
                 pInputText
-                formControlName="nome"
-                [ngClass]="{ 'ng-invalid ng-dirty': empresaForm.get('nome')?.invalid && empresaForm.get('nome')?.touched }"
+                formControlName="name"
+                [ngClass]="{ 'ng-invalid ng-dirty': companyForm.get('name')?.invalid && companyForm.get('name')?.touched }"
               />
-              <label for="nome">Nome*</label>
+              <label for="name">Nome*</label>
             </p-floatLabel>
-            <small *ngIf="empresaForm.get('nome')?.invalid && empresaForm.get('nome')?.touched" class="p-error">
+            <small *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="p-error">
               Nome é obrigatório.
             </small>
           </div>
         </div>
 
-        <!-- Alvarás (opcionais) -->
         <div class="p-fluid grid">
           <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
             <p-floatLabel>
               <p-calendar
-                inputId="vencBombeiros"
-                formControlName="vencBombeiros"
+                inputId="expLicenseFiredept"
+                formControlName="expLicenseFiredept"
                 dateFormat="dd/mm/yy"
                 showIcon
               ></p-calendar>
-              <label for="vencBombeiros">Alvará Bombeiros</label>
+              <label for="expLicenseFiredept">Alvará Bombeiros</label>
             </p-floatLabel>
           </div>
 
           <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
             <p-floatLabel>
               <p-calendar
-                inputId="vencFuncionamento"
-                formControlName="vencFuncionamento"
+                inputId="expLicenseOperating"
+                formControlName="expLicenseOperating"
                 dateFormat="dd/mm/yy"
                 showIcon
               ></p-calendar>
-              <label for="vencFuncionamento">Alvará Funcionamento</label>
+              <label for="expLicenseOperating">Alvará Funcionamento</label>
             </p-floatLabel>
           </div>
 
           <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
             <p-floatLabel>
               <p-calendar
-                inputId="vencPolicia"
-                formControlName="vencPolicia"
+                inputId="expLicensePolice"
+                formControlName="expLicensePolice"
                 dateFormat="dd/mm/yy"
                 showIcon
               ></p-calendar>
-              <label for="vencPolicia">Alvará Polícia</label>
+              <label for="expLicensePolice">Alvará Polícia</label>
             </p-floatLabel>
           </div>
 
           <div class="field col-12 sm:col-6 md:col-6 lg:col-3">
             <p-floatLabel>
               <p-calendar
-                inputId="vencVigilancia"
-                formControlName="vencVigilancia"
+                inputId="expLicenseSurveillance"
+                formControlName="expLicenseSurveillance"
                 dateFormat="dd/mm/yy"
                 showIcon
 
               ></p-calendar>
-              <label for="vencVigilancia">Alvará Vigilância Sanitária</label>
+              <label for="expLicenseSurveillance">Alvará Vigilância Sanitária</label>
             </p-floatLabel>
           </div>
         </div>
@@ -84,7 +83,7 @@
             type="submit"
             pButton
             label="Salvar"
-            [disabled]="empresaForm.invalid"
+            [disabled]="companyForm.invalid"
             class="p-button-primary"
           ></button>
         </div>

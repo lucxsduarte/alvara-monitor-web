@@ -1,15 +1,15 @@
 <section class="login-container">
   <div class="login-card">
     <h2>Monitoramento de Alvarás</h2>
-    <form (ngSubmit)="fazerLogin()" #loginForm="ngForm">
+    <form (ngSubmit)="login()" #loginForm="ngForm">
       <div class="form-group">
         <label for="usuario">Usuário</label>
-        <input type="text" id="usuario" name="usuario" [(ngModel)]="usuario" required />
+        <input type="text" id="usuario" name="usuario" [(ngModel)]="username" required />
       </div>
 
       <div class="form-group">
         <label for="senha">Senha</label>
-        <input type="password" id="senha" name="senha" [(ngModel)]="senha" required />
+        <input type="password" id="senha" name="senha" [(ngModel)]="password" required />
       </div>
 
       <div class="botoes-container">
@@ -18,7 +18,7 @@
           label="Modo Portfólio"
           icon="pi pi-external-link"
           styleClass="p-button-secondary p-button-outlined"
-          (click)="irParaDemo()">
+          (click)="goToDemo()">
         </p-button>
 
         <p-button
@@ -29,7 +29,7 @@
         </p-button>
       </div>
 
-      <p *ngIf="erroLogin" class="error-message">{{ erroLogin }}</p>
+      <p *ngIf="loginError" class="error-message">{{ loginError }}</p>
     </form>
   </div>
 </section>

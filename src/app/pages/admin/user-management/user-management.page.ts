@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {UserService} from '../../../features/user/services/user.service';
-import {CreateUserDTO, EditUserDTO, UserDTO} from '../../../features/user/models/user.dto';
+import {CreateUserRequestDTO, EditUserRequestDTO, UserResponseDTO} from '../../../features/user/models/userResponseDTO';
 import {InputTextModule} from 'primeng/inputtext';
 import {DropdownModule} from 'primeng/dropdown';
 import {ButtonModule} from 'primeng/button';
@@ -50,7 +50,7 @@ export class UserManagementPage implements OnInit {
   userForm!: FormGroup;
   roles: any[];
   isLoading = false;
-  users: UserDTO[] = [];
+  users: UserResponseDTO[] = [];
   ref!: DynamicDialogRef;
 
   constructor() {
@@ -87,7 +87,7 @@ export class UserManagementPage implements OnInit {
     }
 
     this.isLoading = true;
-    const data: CreateUserDTO = {
+    const data: CreateUserRequestDTO = {
       login: this.userForm.value.login,
       password: this.userForm.value.password,
       role: this.userForm.value.role
@@ -113,7 +113,7 @@ export class UserManagementPage implements OnInit {
     });
   }
 
-  editUser(user: UserDTO): void {
+  editUser(user: UserResponseDTO): void {
     this.ref = this.dialogService.open(EditUserComponent, {
       data: {user},
       header: `Editar Usuário: ${user.login}`,
@@ -121,7 +121,7 @@ export class UserManagementPage implements OnInit {
       modal: true,
     });
 
-    this.ref.onClose.subscribe((editedData: EditUserDTO) => {
+    this.ref.onClose.subscribe((editedData: EditUserRequestDTO) => {
       if (editedData) {
         this.userService.update(user.id, editedData).subscribe({
           next: () => {
@@ -137,7 +137,7 @@ export class UserManagementPage implements OnInit {
     });
   }
 
-  deleteUser(user: UserDTO): void {
+  deleteUser(user: UserResponseDTO): void {
     this.confirmationService.confirm({
       message: `Tem certeza que deseja excluir o usuário '${user.login}'?`,
       header: 'Confirmar Exclusão',

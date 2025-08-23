@@ -1,4 +1,4 @@
-export interface ConfiguracaoNotificacaoDTO {
-  diasAlerta: number[];
-  emailsDestino: string[];
+export interface NotificationSettingsDTO {
+  alertDays: number[];
+  recipientEmails: string[];
 }

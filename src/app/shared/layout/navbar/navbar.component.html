@@ -1,8 +1,8 @@
 <p-toolbar styleClass="app-topbar hidden md:flex"> <ng-template pTemplate="start">
   <p-button label="Home" icon="pi pi-home" styleClass="p-button-text" routerLink="/dashboard"></p-button>
-  <p-button label="Empresas" icon="pi pi-building" styleClass="p-button-text" (click)="menuEmpresas.toggle($event)"></p-button>
+  <p-button label="Empresas" icon="pi pi-building" styleClass="p-button-text" (click)="companyMenu.toggle($event)"></p-button>
 
-  <p-menu #menuEmpresas [model]="empresaMenuItems" [popup]="true"></p-menu>
+  <p-menu #companyMenu [model]="companyMenuItems" [popup]="true"></p-menu>
 </ng-template>
 
   <ng-template pTemplate="end">
@@ -14,7 +14,8 @@
 
 </p-toolbar>
 
-<p-toolbar styleClass="app-topbar md:hidden"> <ng-template pTemplate="start">
+<p-toolbar styleClass="app-topbar md:hidden">
+  <ng-template pTemplate="start">
   <p-button label="Home" icon="pi pi-home" styleClass="p-button-text" routerLink="/dashboard"></p-button>
 </ng-template>
 

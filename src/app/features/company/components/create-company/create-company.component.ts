@@ -4,13 +4,13 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {CalendarModule} from "primeng/calendar";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
-import {EmpresaService} from "../../services/empresa.service";
+import {CompanyService} from "../../services/company.service";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
 
 @Component({
-  selector: 'app-cadastrar-empresa',
+  selector: 'app-create-company',
   standalone: true,
   imports: [
     CommonModule,
@@ -21,31 +21,31 @@ import {requireAtLeastOneDateValidator} from "../../../../utils/form.validator";
     FormsModule,
     ToastModule,
   ],
-  templateUrl: './cadastrar-empresa.component.html',
-  styleUrl: './cadastrar-empresa.component.scss',
+  templateUrl: './create-company.component.html',
+  styleUrl: './create-company.component.scss',
 })
-export class CadastrarEmpresaComponent implements OnInit {
-  empresaForm!: FormGroup;
+export class CreateCompanyComponent implements OnInit {
+  companyForm!: FormGroup;
 
   private fb = inject(FormBuilder);
-  private empresaService = inject(EmpresaService);
+  private companyService = inject(CompanyService);
   private messageService = inject(MessageService);
 
   ngOnInit(): void {
-    this.empresaForm = this.fb.group({
-      nome: ['', Validators.required],
-      vencBombeiros: [null],
-      vencFuncionamento: [null],
-      vencPolicia: [null],
-      vencVigilancia: [null],
+    this.companyForm = this.fb.group({
+      name: ['', Validators.required],
+      expLicenseFiredept: [null],
+      expLicenseOperating: [null],
+      expLicensePolice: [null],
+      expLicenseSurveillance: [null],
     }, {
       validators: [requireAtLeastOneDateValidator()]
     });
   }
 
   save(): void {
-    if (this.empresaForm.invalid) {
-      const detail = this.empresaForm.hasError('requireAtLeastOneDate')
+    if (this.companyForm.invalid) {
+      const detail = this.companyForm.hasError('requireAtLeastOneDate')
         ? 'Preencha pelo menos uma data de alvará.'
         : 'Preencha os campos corretamente.';
 
@@ -53,22 +53,22 @@ export class CadastrarEmpresaComponent implements OnInit {
       return;
     }
 
-    const formValues = this.empresaForm.value;
+    const formValues = this.companyForm.value;
 
     const formatDate = (date: Date | null): string | null => date ? date.toISOString().split('T')[0] : null;
 
-    const dadosParaApi = {
-      ...formValues,
-      vencBombeiros: formatDate(formValues.vencBombeiros),
-      vencFuncionamento: formatDate(formValues.vencFuncionamento),
-      vencPolicia: formatDate(formValues.vencPolicia),
-      vencVigilancia: formatDate(formValues.vencVigilancia),
+    const apiData = {
+      name: formValues.name,
+      expLicenseFiredept: formatDate(formValues.expLicenseFiredept),
+      expLicenseOperating: formatDate(formValues.expLicenseOperating),
+      expLicensePolice: formatDate(formValues.expLicensePolice),
+      expLicenseSurveillance: formatDate(formValues.expLicenseSurveillance),
     };
 
-    this.empresaService.salvarEmpresa(dadosParaApi).subscribe({
+    this.companyService.saveCompany(apiData).subscribe({
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Empresa cadastrada com sucesso!' });
-        this.empresaForm.reset();
+        this.companyForm.reset();
       },
       error: (error) => {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível cadastrar a empresa.' });
